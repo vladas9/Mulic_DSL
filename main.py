@@ -1,27 +1,28 @@
-import sys
 from lexer import Lexer
 from parser import Parser
+from interpreter import MusicInterpreter
 
-def main():
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <filename>")
-        return
-
-    with open(sys.argv[1], 'r') as f:
-        data = f.read()
-
-    lexer = Lexer(data)
-    parser = Parser(lexer)
-    
-    try:
-        parsed_data = parser.parse()
-        print("Parsing successful!")
-        print(parsed_data)
-        
-    except SyntaxError as e:
-        print(f"Syntax Error: {e}")
-    except Exception as e:
-        print(f"Error: {e}")
-
+# Main function to parse and interpret code
 if __name__ == "__main__":
-    main()
+    # Path to the test file
+    file_path = 'test.test'
+    
+    # Step 1: Read the content of the file
+    with open(file_path, 'r') as file:
+        code = file.read()
+
+    # Step 2: Tokenize the code using the lexer
+    lexer = Lexer(code)
+    
+    # Step 3: Parse the tokens using the parser
+    parser = Parser(lexer)
+    parsed_data = parser.parse()
+    
+    # Step 4: Interpret the parsed data and generate audio
+    interpreter = MusicInterpreter(parsed_data)
+    interpreter.generate_music()
+    
+    # Optional: Export or play the audio
+    # For example: Save the generated audio to a file
+    interpreter.final_audio.export("output_music.mp3", format="mp3")
+    print("Music generated and saved to output_music.mp3")

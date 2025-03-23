@@ -1,51 +1,39 @@
-import fluidsynth
-import time
-import math
 from pydub import AudioSegment
+from pydub.generators import Sine
 
+# Constants
+SAMPLE_RATE = 44100  # Sample rate (samples per second)
+AMPLITUDE = 16000  # Amplitude of the sine wave (max for 16-bit PCM audio)
+DURATION = 1.0  # Duration of each note in seconds
+
+# Mapping note names to frequencies (in Hz)
 NOTE_FREQUENCIES = {
     'do': 261.63, 're': 293.66, 'mi': 329.63, 'fa': 349.23, 'sol': 392.00, 
     'la': 440.00, 'si': 493.88
 }
 
-class MusicInterpreter:
-    def __init__(self, parsed_data, soundfont_path):
-        self.parsed_data = parsed_data
-        self.tempo = 120  
-        self.volume = 80  
-        self.fs = fluidsynth.Synth()
-        self.output_wav = "temp_output.wav"
-        # Configure fluidsynth to write to a WAV file
-        self.fs.setting("audio.file.name", self.output_wav)
-        self.fs.setting("audio.file.type", "wav")
-        self.fs.start(driver="file")
-        self.fs.sfload(soundfont_path)  # Load the SoundFont
+# Generate sine wave for a given frequency using pydub's Sine generator
+def generate_sine_wave(frequency, duration=DURATION, sample_rate=SAMPLE_RATE):
+    sine = Sine(frequency)
+    return sine.to_audio_segment(duration=duration * 1000)  # Duration in milliseconds
 
+# Class to handle the music interpretation
+class MusicInterpreter:
+    def __init__(self, parsed_data):
+        self.parsed_data = parsed_data
+        self.tempo = 120  # Default tempo (beats per minute)
+        self.volume = 80  # Volume (0 to 127)
+        self.final_audio = AudioSegment.silent(duration=0)  # Start with an empty audio segment
+    
     def fraction_to_duration(self, fraction, tempo):
         beat_duration_in_ms = (60 / tempo) * 1000
         return beat_duration_in_ms * eval(fraction)
-
-    def play_piano_note(self, frequency, duration_ms):
-        midi_note = self.freq_to_midi(frequency)
-        self.fs.noteon(0, midi_note, self.volume)  # Channel 0, MIDI note, velocity
-        time.sleep(duration_ms / 1000.0)
-        self.fs.noteoff(0, midi_note)  # Turn off the note
-
-    def play_guitar_note(self, frequency, duration_ms):
-        midi_note = self.freq_to_midi(frequency)
-        self.fs.noteon(1, midi_note, self.volume)  # Use channel 1 for guitar
-        time.sleep(duration_ms / 1000.0)
-        self.fs.noteoff(1, midi_note)
-
-    def freq_to_midi(self, frequency):
-        # Convert frequency to MIDI note
-        return int(69 + 12 * (math.log(frequency / 440.0) / math.log(2)))
 
     def generate_music(self):
         for chunk in self.parsed_data:
             for statement in chunk['statements']:
                 if statement['type'] == 'TIME_SIGNATURE':
-                    pass  # Handle time signature
+                    pass  # Handle time signature if needed
                 elif statement['type'] == 'TEMPO':
                     self.tempo = int(statement['value'].split('=')[1])
                 elif statement['type'] == 'VOLUME':
@@ -58,8 +46,6 @@ class MusicInterpreter:
                     self.handle_sync(statement['statements'])
                 elif statement['type'] == 'LOOP':
                     self.handle_loop(statement)
-        # Close the synth to finalize the WAV file
-        self.fs.delete()
 
     def handle_piano(self, statement):
         note_name = statement['identifier2']
@@ -67,7 +53,8 @@ class MusicInterpreter:
         frequency = NOTE_FREQUENCIES.get(note_name)
         if frequency:
             duration_ms = self.fraction_to_duration(fraction, self.tempo)
-            self.play_piano_note(frequency, duration_ms)
+            sine_wave_segment = generate_sine_wave(frequency, duration=duration_ms / 1000)
+            self.final_audio += sine_wave_segment
 
     def handle_guitar(self, statement):
         note_name = statement['identifier2']
@@ -75,7 +62,8 @@ class MusicInterpreter:
         frequency = NOTE_FREQUENCIES.get(note_name)
         if frequency:
             duration_ms = self.fraction_to_duration(fraction, self.tempo)
-            self.play_guitar_note(frequency, duration_ms)
+            sine_wave_segment = generate_sine_wave(frequency, duration=duration_ms / 1000)
+            self.final_audio += sine_wave_segment
 
     def handle_sync(self, sync_statements):
         for statement in sync_statements:
@@ -105,3 +93,6 @@ class MusicInterpreter:
                 elif action['type'] == 'GUITAR':
                     self.handle_guitar(action)
             current_frequency += loop_increment * (loop_condition_frequency - loop_start_frequency) / 7
+
+    def save_to_mp3(self, filename="output.mp3"):
+        self.final_audio.export(filename, format="mp3")  # Export final composition to MP3
