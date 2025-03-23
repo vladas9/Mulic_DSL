@@ -1,0 +1,95 @@
+chunk1 {
+    TimeSignature=4/4
+    Tempo=120
+    Volume=80
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, do, 1/8)
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, sol, 1/4)
+    sync {
+        Guitar(L, do, 1/4)
+        Guitar(L, sol, 1/4)
+    }
+}
+
+chunk2 {
+    TimeSignature=4/4
+    Tempo=120
+    Volume=80
+    Piano(R, sol, 1/8)
+    Pause(1/8)
+    Piano(R, do, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, la, 1/8)
+    Piano(R, si, 1/8)
+    Piano(R, la, 1/8)
+    sync {
+        Guitar(L, sol, 1/4)
+        Guitar(L, mi, 1/4)
+    }
+}
+
+chunk3 {
+    TimeSignature=4/4
+    Tempo=120
+    Volume=80
+    Piano(R, sol, 1/8)
+    Pause(1/8)
+    Piano(R, fa, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, do, 1/8)
+    Piano(R, re, 1/8)
+    Piano(R, si, 1/8)
+    sync {
+        Guitar(L, do, 1/4)
+        Guitar(L, sol, 1/4)
+    }
+}
+
+chunk4 {
+    TimeSignature=4/4
+    Tempo=120
+    Volume=80
+    Piano(R, do, 1/8)
+    Pause(1/8)
+    Piano(R, sol, 1/8)
+    Pause(1/8)
+    Piano(R, do, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Piano(R, sol, 1/8)
+    Piano(R, do, 1/8)
+    sync {
+        Guitar(L, do, 1/4)
+        Guitar(L, sol, 1/4)
+    }
+}
+
+chunk5 {
+    TimeSignature=4/4
+    Tempo=120
+    Volume=80
+    Piano(R, mi, 1/8)
+    Pause(1/8)
+    Piano(R, do, 1/8)
+    Pause(1/8)
+    Piano(R, sol, 1/8)
+    Pause(1/8)
+    Piano(R, mi, 1/8)
+    Piano(R, do, 1/8)
+    Piano(R, sol, 1/8)
+    sync {
+        Guitar(L, do, 1/4)
+        Guitar(L, sol, 1/4)
+    }
+}

@@ -1,0 +1,411 @@
+[
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME'
+, 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type':
+ 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'id
+entifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/
+8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifie
+r1': 'R', 'identifier2': 'sol', 'fraction': '1/4'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fract
+ion': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIG
+NATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifi
+er1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 
+'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAU
+SE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'la', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identif
+ier2': 'si', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'la', 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type
+': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'mi', 'fraction': '1/
+4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 
+'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'fa', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1':
+ 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fract
+ion': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 're', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'si'
+, 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR
+', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignatu
+re=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do'
+, 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': '
+PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'typ
+e': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8
+'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': '
+L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 's
+tatements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80
+'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier
+1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'f
+raction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PIANO
+', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type
+': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'iden
+tifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  }
+]
+Parsing successful!
+[
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME'
+, 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type':
+ 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'id
+entifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/
+8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifie
+r1': 'R', 'identifier2': 'sol', 'fraction': '1/4'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fract
+ion': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIG
+NATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifi
+er1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 
+'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAU
+SE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'la', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identif
+ier2': 'si', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'la', 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type
+': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'mi', 'fraction': '1/
+4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 
+'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'fa', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1':
+ 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fract
+ion': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 're', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'si'
+, 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR
+', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 'statements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignatu
+re=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do'
+, 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type': '
+PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'typ
+e': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8
+'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': '
+L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  },
+  {'type': 'CHUNK', 's
+tatements': [
+      {'type': 'TIME_SIGNATURE', 'value': 'TimeSignature=4/4'
+      },
+      {'type': 'TEMPO', 'value': 'Tempo=120'
+      },
+      {'type': 'VOLUME', 'value': 'Volume=80
+'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier
+1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'f
+raction': '1/8'
+      },
+      {'type': 'PAUSE', 'duration': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'mi', 'fraction': '1/8'
+      },
+      {'type': 'PIANO
+', 'identifier1': 'R', 'identifier2': 'do', 'fraction': '1/8'
+      },
+      {'type': 'PIANO', 'identifier1': 'R', 'identifier2': 'sol', 'fraction': '1/8'
+      },
+      {'type
+': 'SYNC', 'statements': [
+          {'type': 'GUITAR', 'identifier1': 'L', 'identifier2': 'do', 'fraction': '1/4'
+          },
+          {'type': 'GUITAR', 'identifier1': 'L', 'iden
+tifier2': 'sol', 'fraction': '1/4'
+          }
+        ]
+      }
+    ]
+  }
+]
