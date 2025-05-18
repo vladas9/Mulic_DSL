@@ -116,7 +116,7 @@ class Lexer:
         }
         
         # Note pattern (e.g., C4, A#3, Db2)
-        self.note_pattern = re.compile(r'^[A-G][b#]?\d$')
+        self.note_pattern = re.compile(r'([A-G][b#]?)(\d+)')
     
     def scan_tokens(self) -> List[Token]:
         while not self.is_at_end():
@@ -270,19 +270,35 @@ class Lexer:
             self.add_token(TokenType.INT_LITERAL, int(self.source[self.start:self.current]))
     
     def identifier(self) -> None:
+        spn_lookahead_match = self.note_pattern.match(self.source, self.start)
+
+        if spn_lookahead_match and spn_lookahead_match.start() == self.start:
+            potential_spn_text = spn_lookahead_match.group(0) # The full matched text like "F#5"
+
+            idx_after_spn = self.start + len(potential_spn_text)
+
+            is_standalone_spn = True 
+            if idx_after_spn < len(self.source): 
+                char_after_spn = self.source[idx_after_spn]
+                if char_after_spn.isalnum() or char_after_spn == '_':
+                    is_standalone_spn = False 
+
+            if is_standalone_spn:
+                self.current = idx_after_spn # Advance current to the end of the SPN
+                self.add_token(TokenType.SPN_NOTE, potential_spn_text)
+                return
+
         while self.peek().isalnum() or self.peek() == '_':
             self.advance()
-            
+
         text = self.source[self.start:self.current]
         
-        # Check if it's a note pattern like C4, A#3
-        if self.note_pattern.match(text):
-            self.add_token(TokenType.SPN_NOTE, text)
-            return
-        
-        # Check if it's a keyword
-        token_type = self.keywords.get(text, TokenType.IDENTIFIER)
-        self.add_token(token_type, text if token_type == TokenType.IDENTIFIER else text)
+        token_type = self.keywords.get(text)
+        if token_type:
+            self.add_token(token_type, text)
+        else:
+            self.add_token(TokenType.IDENTIFIER, text)
+
     
     def add_token(self, token_type: TokenType, literal: Any = None) -> None:
         text = self.source[self.start:self.current]
