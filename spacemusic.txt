@@ -1,0 +1,433 @@
+// Space Adventure 8-Bit Style Music
+// Inspired by classic space shooter games
+
+PianoTrack  // Main melody track
+{
+    TimeSignature = 4/4;
+    Tempo = 140;  // Medium-fast tempo for space adventure feel
+    Volume = "f";
+
+    // Main theme - First Phrase
+    Piano(R, C5, 0.25);
+    Piano(R, G5, 0.25);
+    Piano(R, F5, 0.25);
+    Piano(R, E5, 0.25);
+    
+    Piano(R, D5, 0.25);
+    Piano(R, C5, 0.25);
+    Piano(R, D5, 0.25);
+    Piano(R, E5, 0.25);
+    
+    Piano(R, F5, 0.5);
+    Piano(R, E5, 0.25);
+    Piano(R, D5, 0.25);
+    
+    Piano(R, C5, 0.5);
+    Pause(0.5);
+
+    // Second phrase - faster pattern
+    Piano(R, G4, 0.125);
+    Piano(R, C5, 0.125);
+    Piano(R, G4, 0.125);
+    Piano(R, C5, 0.125);
+    Piano(R, G4, 0.125);
+    Piano(R, C5, 0.125);
+    Piano(R, G4, 0.125);
+    Piano(R, C5, 0.125);
+    
+    Piano(R, A4, 0.125);
+    Piano(R, D5, 0.125);
+    Piano(R, A4, 0.125);
+    Piano(R, D5, 0.125);
+    Piano(R, A4, 0.125);
+    Piano(R, D5, 0.125);
+    Piano(R, A4, 0.125);
+    Piano(R, D5, 0.125);
+    
+    // Third phrase - spacey melody
+    Piano(R, G5, 0.5);
+    Piano(R, F5, 0.25);
+    Piano(R, E5, 0.25);
+    
+    Piano(R, D5, 0.25);
+    Piano(R, C5, 0.25);
+    Piano(R, D5, 0.25);
+    Piano(R, E5, 0.25);
+    
+    Piano(R, F5, 0.25);
+    Piano(R, G5, 0.25);
+    Piano(R, A5, 0.25);
+    Piano(R, B5, 0.25);
+    
+    Piano(R, C6, 0.5);
+    Pause(0.5);
+
+    // Repeat of pattern with variation
+    Piano(R, C5, 0.25);
+    Piano(R, G4, 0.25);
+    Piano(R, C5, 0.25);
+    Piano(R, G4, 0.25);
+    
+    Piano(R, B4, 0.25);
+    Piano(R, G4, 0.25);
+    Piano(R, B4, 0.25);
+    Piano(R, G4, 0.25);
+    
+    Piano(R, Bb4, 0.25);
+    Piano(R, F4, 0.25);
+    Piano(R, Bb4, 0.25);
+    Piano(R, F4, 0.25);
+    
+    Piano(R, A4, 0.25);
+    Piano(R, F4, 0.25);
+    Piano(R, A4, 0.25);
+    Piano(R, F4, 0.25);
+
+    // Ending phrase - dramatic
+    Piano(R, C6, 0.125);
+    Piano(R, B5, 0.125);
+    Piano(R, A5, 0.125);
+    Piano(R, G5, 0.125);
+    Piano(R, F5, 0.125);
+    Piano(R, E5, 0.125);
+    Piano(R, D5, 0.125);
+    Piano(R, C5, 0.125);
+    
+    Piano(R, G5, 0.5);
+    Piano(R, C6, 0.5);
+    
+    // Final notes with staccato effect
+    Piano(R, C6, 0.125);
+    Pause(0.125);
+    Piano(R, C6, 0.125);
+    Pause(0.125);
+    Piano(R, C6, 0.5);
+}
+
+BassTrack  // Bass accompaniment
+{
+    TimeSignature = 4/4;
+    Tempo = 140;
+    Volume = "mf";
+
+    // Bass pattern for the main theme
+    for (i = 0; i < 2; i += 1)
+    {
+        // C minor progression
+        Bass(4, 0, 0.25);  // C
+        Bass(4, 0, 0.25);  // C
+        Bass(4, 0, 0.25);  // C
+        Bass(4, 0, 0.25);  // C
+        
+        Bass(4, 3, 0.25);  // D#/Eb
+        Bass(4, 3, 0.25);  // D#/Eb
+        Bass(4, 3, 0.25);  // D#/Eb
+        Bass(4, 3, 0.25);  // D#/Eb
+        
+        Bass(4, 5, 0.25);  // F
+        Bass(4, 5, 0.25);  // F
+        Bass(4, 5, 0.25);  // F
+        Bass(4, 5, 0.25);  // F
+        
+        Bass(4, 7, 0.25);  // G
+        Bass(4, 7, 0.25);  // G
+        Bass(4, 7, 0.25);  // G
+        Bass(4, 7, 0.25);  // G
+    }
+    
+    // Bass pattern for the second theme - faster
+    for (i = 0; i < 2; i += 1)
+    {
+        Bass(4, 0, 0.125);  // C
+        Bass(3, 0, 0.125);  // G
+        Bass(4, 0, 0.125);  // C
+        Bass(3, 0, 0.125);  // G
+        Bass(4, 0, 0.125);  // C
+        Bass(3, 0, 0.125);  // G
+        Bass(4, 0, 0.125);  // C
+        Bass(3, 0, 0.125);  // G
+        
+        Bass(4, 2, 0.125);  // D
+        Bass(3, 2, 0.125);  // A
+        Bass(4, 2, 0.125);  // D
+        Bass(3, 2, 0.125);  // A
+        Bass(4, 2, 0.125);  // D
+        Bass(3, 2, 0.125);  // A
+        Bass(4, 2, 0.125);  // D
+        Bass(3, 2, 0.125);  // A
+    }
+
+    // Return to main theme bass
+    for (i = 0; i < 2; i += 1)
+    {
+        Bass(4, 0, 0.5);  // C
+        Bass(4, 7, 0.5);  // G
+        Bass(4, 5, 0.5);  // F
+        Bass(4, 7, 0.5);  // G
+    }
+
+    // Ending bass pattern
+    Bass(4, 0, 0.125);  // C
+    Pause(0.125);
+    Bass(4, 0, 0.125);  // C
+    Pause(0.125);
+    Bass(4, 0, 0.5);    // C
+}
+
+GuitarTrack  // Harmony/chords track
+{
+    TimeSignature = 4/4;
+    Tempo = 140;
+    Volume = "mp";  // Slightly lower to sit behind the melody
+
+    // Chord accompaniment with arpeggio-like patterns
+    for (j = 0; j < 2; j += 1)
+    {
+        // C minor arpeggios
+        sync {
+            Guitar(6, 3, 0.25);  // C
+            Guitar(5, 4, 0.25);  // Eb
+            Guitar(4, 3, 0.25);  // G
+        }
+        
+        Pause(0.25);
+        
+        sync {
+            Guitar(6, 3, 0.25);  // C
+            Guitar(5, 4, 0.25);  // Eb
+            Guitar(4, 3, 0.25);  // G
+        }
+        
+        Pause(0.25);
+        
+        // Eb major arpeggios
+        sync {
+            Guitar(6, 6, 0.25);  // Eb
+            Guitar(5, 8, 0.25);  // G
+            Guitar(4, 8, 0.25);  // Bb
+        }
+        
+        Pause(0.25);
+        
+        sync {
+            Guitar(6, 6, 0.25);  // Eb
+            Guitar(5, 8, 0.25);  // G
+            Guitar(4, 8, 0.25);  // Bb
+        }
+        
+        Pause(0.25);
+        
+        // F minor arpeggios
+        sync {
+            Guitar(6, 1, 0.25);  // F
+            Guitar(5, 1, 0.25);  // Ab
+            Guitar(4, 1, 0.25);  // C
+        }
+        
+        Pause(0.25);
+        
+        sync {
+            Guitar(6, 1, 0.25);  // F
+            Guitar(5, 1, 0.25);  // Ab
+            Guitar(4, 1, 0.25);  // C
+        }
+        
+        Pause(0.25);
+        
+        // G major arpeggios
+        sync {
+            Guitar(6, 3, 0.25);  // G
+            Guitar(5, 2, 0.25);  // B
+            Guitar(4, 0, 0.25);  // D
+        }
+        
+        Pause(0.25);
+        
+        sync {
+            Guitar(6, 3, 0.25);  // G
+            Guitar(5, 2, 0.25);  // B
+            Guitar(4, 0, 0.25);  // D
+        }
+        
+        Pause(0.25);
+    }
+    
+    // Faster arpeggios for the middle section
+    for (j = 0; j < 1; j += 1)
+    {
+        // C major - faster pattern
+        Guitar(6, 0, 0.125);  // E (low E string)
+        Guitar(5, 3, 0.125);  // C
+        Guitar(4, 2, 0.125);  // E
+        Guitar(3, 0, 0.125);  // G
+        Guitar(2, 1, 0.125);  // C
+        Guitar(3, 0, 0.125);  // G
+        Guitar(4, 2, 0.125);  // E
+        Guitar(5, 3, 0.125);  // C
+        
+        // D minor - faster pattern
+        Guitar(6, 5, 0.125);  // A (low E string)
+        Guitar(5, 7, 0.125);  // D
+        Guitar(4, 7, 0.125);  // F
+        Guitar(3, 7, 0.125);  // A
+        Guitar(2, 6, 0.125);  // D
+        Guitar(3, 7, 0.125);  // A
+        Guitar(4, 7, 0.125);  // F
+        Guitar(5, 7, 0.125);  // D
+    }
+    
+    // Return to main pattern with variation
+    for (j = 0; j < 2; j += 1)
+    {
+        // C minor
+        sync {
+            Guitar(6, 3, 0.5);  // C
+            Guitar(5, 4, 0.5);  // Eb
+            Guitar(4, 3, 0.5);  // G
+        }
+        
+        // G major
+        sync {
+            Guitar(6, 3, 0.5);  // G
+            Guitar(5, 2, 0.5);  // B
+            Guitar(4, 0, 0.5);  // D
+        }
+    }
+    
+    // Final chord stabs
+    sync {
+        Guitar(6, 3, 0.125);  // C
+        Guitar(5, 4, 0.125);  // Eb
+        Guitar(4, 3, 0.125);  // G
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Guitar(6, 3, 0.125);  // C
+        Guitar(5, 4, 0.125);  // Eb
+        Guitar(4, 3, 0.125);  // G
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Guitar(6, 3, 0.5);  // C
+        Guitar(5, 4, 0.5);  // Eb
+        Guitar(4, 3, 0.5);  // G
+    }
+}
+
+DrumTrack  // Percussion track
+{
+    TimeSignature = 4/4;
+    Tempo = 140;
+    Volume = "mf";
+
+    // Introduction
+    Drum(KICK, 0.25);
+    Drum(SNARE, 0.25);
+    Drum(KICK, 0.25);
+    Drum(SNARE, 0.25);
+    
+    // Main beat pattern
+    for (k = 0; k < 8; k += 1)
+    {
+        // Basic 8-bit style drum pattern
+        sync {
+            Drum(KICK, 0.25);
+            Drum(HIHAT_CLOSED, 0.25);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.25);
+        
+        sync {
+            Drum(SNARE, 0.25);
+            Drum(HIHAT_CLOSED, 0.25);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.25);
+    }
+    
+    // More intense pattern for middle section
+    for (k = 0; k < 4; k += 1)
+    {
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_PEDAL, 0.125);
+    }
+    
+    // Return to standard beat
+    for (k = 0; k < 4; k += 1)
+    {
+        sync {
+            Drum(KICK, 0.25);
+            Drum(HIHAT_CLOSED, 0.25);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.25);
+        
+        sync {
+            Drum(SNARE, 0.25);
+            Drum(HIHAT_CLOSED, 0.25);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.25);
+    }
+    
+    // Fill leading to the end
+    Drum(KICK, 0.125);
+    Drum(SNARE, 0.125);
+    Drum(KICK, 0.125);
+    Drum(SNARE, 0.125);
+    Drum(KICK, 0.125);
+    Drum(SNARE, 0.125);
+    Drum(KICK, 0.0625);
+    Drum(KICK, 0.0625);
+    Drum(SNARE, 0.125);
+    
+    // Final hits
+    sync {
+        Drum(KICK, 0.125);
+        Drum(CRASH, 0.125);
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Drum(KICK, 0.125);
+        Drum(CRASH, 0.125);
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Drum(KICK, 0.5);
+        Drum(CRASH, 0.5);
+        Drum(SNARE, 0.5);
+    }
+}

@@ -1,0 +1,430 @@
+// Nyan Cat Music Recreation
+// Featuring the iconic rainbow pop-tart cat melody
+
+PianoTrack  // Main melody track
+{
+    TimeSignature = 4/4;
+    Tempo = 142;  // Original Nyan Cat tempo is around 142 BPM
+    Volume = "f";
+
+    // Nyan Cat main melody pattern
+    // The repeating happy pattern that defines the song
+    for (i = 0; i < 4; i += 1)
+    {
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        Piano(R, Fs5, 0.25);
+        Piano(R, B4, 0.25);
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        
+        Piano(R, Fs5, 0.125);
+        Piano(R, B4, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        Piano(R, Fs5, 0.125);
+        Piano(R, B4, 0.125);
+        Piano(R, Cs5, 0.25);
+    }
+    
+    // Second melodic pattern that's slightly different
+    for (i = 0; i < 4; i += 1)
+    {
+        Piano(R, B4, 0.125);
+        Piano(R, Cs5, 0.125);
+        Piano(R, D5, 0.25);
+        Piano(R, D5, 0.25);
+        Piano(R, Cs5, 0.125);
+        Piano(R, B4, 0.125);
+        
+        Piano(R, Cs5, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, Fs5, 0.125);
+        Piano(R, Gs5, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, Fs5, 0.125);
+        Piano(R, Cs5, 0.25);
+    }
+    
+    // Return to main pattern with higher variation
+    for (i = 0; i < 4; i += 1)
+    {
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        Piano(R, Fs5, 0.25);
+        Piano(R, B4, 0.25);
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        
+        Piano(R, Fs5, 0.125);
+        Piano(R, B4, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, E5, 0.125);
+        Piano(R, Fs5, 0.125);
+        Piano(R, B4, 0.125);
+        Piano(R, Bb5, 0.25);
+    }
+    
+    // Final pattern with closing notes
+    for (i = 0; i < 3; i += 1)
+    {
+        Piano(R, Fs5, 0.125);
+        Piano(R, Gs5, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, Fs5, 0.125);
+        Piano(R, Cs5, 0.125);
+        Piano(R, Eb5, 0.125);
+        Piano(R, B4, 0.25);
+    }
+    
+    // Final notes
+    Piano(R, Fs5, 0.125);
+    Piano(R, Gs5, 0.125);
+    Piano(R, Eb5, 0.125);
+    Piano(R, Fs5, 0.125);
+    Piano(R, Cs5, 0.125);
+    Piano(R, Eb5, 0.125);
+    Piano(R, B4, 0.125);
+    Piano(R, Cs5, 0.125);
+    
+    Piano(R, B4, 0.5);
+}
+
+BassTrack  // Fast-paced bass underpinning
+{
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mf";
+
+    // Nyan Cat bass pattern - bouncy eighth notes
+    for (i = 0; i < 16; i += 1)
+    {
+        // Basic I-V pattern in B major
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+    }
+    
+    // Variation with Gs minor (vi chord)
+    for (i = 0; i < 8; i += 1)
+    {
+        Bass(4, 9, 0.125);  // Gs
+        Bass(3, 11, 0.125); // Eb
+        Bass(4, 9, 0.125);  // Gs
+        Bass(3, 11, 0.125); // Eb
+        Bass(4, 9, 0.125);  // Gs
+        Bass(3, 11, 0.125); // Eb
+        Bass(4, 9, 0.125);  // Gs
+        Bass(3, 11, 0.125); // Eb
+    }
+    
+    // Back to main pattern
+    for (i = 0; i < 8; i += 1)
+    {
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+        Bass(4, 2, 0.125);  // B
+        Bass(3, 4, 0.125);  // Fs
+    }
+    
+    // Final notes
+    Bass(4, 2, 0.125);  // B
+    Bass(3, 4, 0.125);  // Fs
+    Bass(4, 2, 0.125);  // B
+    Bass(3, 4, 0.125);  // Fs
+    Bass(4, 2, 0.125);  // B
+    Bass(3, 4, 0.125);  // Fs
+    Bass(4, 2, 0.25);   // B
+}
+
+GuitarTrack  // Rainbow synth chord progression 
+{
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mp";  // Medium-soft to blend with the melody
+
+    // Nyan Cat has distinct synth chord progressions
+    // Here we'll use the guitar to emulate those synth chords
+    
+    // B major chord progression - I-V-vi-IV pattern typical for Nyan Cat
+    for (j = 0; j < 4; j += 1)
+    {
+        // B major (I)
+        for (k = 0; k < 2; k += 1)
+        {
+            sync {
+                Guitar(6, 2, 0.125);  // B
+                Guitar(5, 4, 0.125);  // Fs
+                Guitar(4, 4, 0.125);  // Eb
+                Guitar(3, 4, 0.125);  // B
+            }
+            
+            Pause(0.125);
+            
+            sync {
+                Guitar(6, 2, 0.125);  // B
+                Guitar(5, 4, 0.125);  // Fs
+                Guitar(4, 4, 0.125);  // Eb
+                Guitar(3, 4, 0.125);  // B
+            }
+            
+            Pause(0.125);
+        }
+        
+        // Fs major (V)
+        for (k = 0; k < 2; k += 1)
+        {
+            sync {
+                Guitar(6, 9, 0.125);  // Fs
+                Guitar(5, 11, 0.125); // Cs
+                Guitar(4, 11, 0.125); // Bb
+                Guitar(3, 11, 0.125); // Fs
+            }
+            
+            Pause(0.125);
+            
+            sync {
+                Guitar(6, 9, 0.125);  // Fs
+                Guitar(5, 11, 0.125); // Cs
+                Guitar(4, 11, 0.125); // Bb
+                Guitar(3, 11, 0.125); // Fs
+            }
+            
+            Pause(0.125);
+        }
+        
+        // Gs minor (vi)
+        for (k = 0; k < 2; k += 1)
+        {
+            sync {
+                Guitar(6, 11, 0.125);  // Gs
+                Guitar(5, 13, 0.125);  // Eb
+                Guitar(4, 13, 0.125);  // B
+                Guitar(3, 11, 0.125);  // Gs
+            }
+            
+            Pause(0.125);
+            
+            sync {
+                Guitar(6, 11, 0.125);  // Gs
+                Guitar(5, 13, 0.125);  // Eb
+                Guitar(4, 13, 0.125);  // B
+                Guitar(3, 11, 0.125);  // Gs
+            }
+            
+            Pause(0.125);
+        }
+        
+        // E major (IV)
+        for (k = 0; k < 2; k += 1)
+        {
+            sync {
+                Guitar(6, 7, 0.125);  // E
+                Guitar(5, 9, 0.125);  // B
+                Guitar(4, 9, 0.125);  // Gs
+                Guitar(3, 9, 0.125);  // E
+            }
+            
+            Pause(0.125);
+            
+            sync {
+                Guitar(6, 7, 0.125);  // E
+                Guitar(5, 9, 0.125);  // B
+                Guitar(4, 9, 0.125);  // Gs
+                Guitar(3, 9, 0.125);  // E
+            }
+            
+            Pause(0.125);
+        }
+    }
+    
+    // Final chords - simpler staccato B major
+    sync {
+        Guitar(6, 2, 0.125);  // B
+        Guitar(5, 4, 0.125);  // Fs
+        Guitar(4, 4, 0.125);  // Eb
+        Guitar(3, 4, 0.125);  // B
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Guitar(6, 2, 0.125);  // B
+        Guitar(5, 4, 0.125);  // Fs
+        Guitar(4, 4, 0.125);  // Eb
+        Guitar(3, 4, 0.125);  // B
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Guitar(6, 2, 0.25);  // B
+        Guitar(5, 4, 0.25);  // Fs
+        Guitar(4, 4, 0.25);  // Eb
+        Guitar(3, 4, 0.25);  // B
+    }
+}
+
+DrumTrack  // Percussion track with fast-paced beat
+{
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mf";
+
+    // Nyan Cat has a consistent, driving beat
+    // The original uses electronically produced percussion
+    
+    // Initial build-up
+    for (k = 0; k < 4; k += 1)
+    {
+        Drum(HIHAT_CLOSED, 0.125);
+        Drum(HIHAT_CLOSED, 0.125);
+        Drum(SNARE, 0.125);
+        Drum(HIHAT_CLOSED, 0.125);
+        Drum(HIHAT_CLOSED, 0.125);
+        Drum(HIHAT_CLOSED, 0.125);
+        Drum(SNARE, 0.125);
+        Drum(HIHAT_CLOSED, 0.125);
+    }
+    
+    // Main beat pattern
+    for (k = 0; k < 8; k += 1)
+    {
+        // Basic 8-bit style drum pattern but faster for Nyan Cat feel
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_OPEN, 0.125);
+        }
+    }
+    
+    // Variation with more snare hits
+    for (k = 0; k < 4; k += 1)
+    {
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_OPEN, 0.125);
+        }
+    }
+    
+    // Return to main pattern
+    for (k = 0; k < 4; k += 1)
+    {
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(KICK, 0.125);
+            Drum(HIHAT_CLOSED, 0.125);
+        }
+        
+        Drum(HIHAT_CLOSED, 0.125);
+        
+        sync {
+            Drum(SNARE, 0.125);
+            Drum(HIHAT_OPEN, 0.125);
+        }
+    }
+    
+    // Final drum fill
+    Drum(KICK, 0.125);
+    Drum(SNARE, 0.125);
+    Drum(SNARE, 0.125);
+    Drum(SNARE, 0.125);
+    
+    // Final hits
+    sync {
+        Drum(KICK, 0.125);
+        Drum(SNARE, 0.125);
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Drum(KICK, 0.125);
+        Drum(SNARE, 0.125);
+    }
+    
+    Pause(0.125);
+    
+    sync {
+        Drum(KICK, 0.25);
+        Drum(CRASH, 0.25);
+        Drum(SNARE, 0.25);
+    }
+}
