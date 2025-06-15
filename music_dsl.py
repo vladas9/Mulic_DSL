@@ -1713,46 +1713,46 @@ class Interpreter:
         print(f"  - Data: {json_filename}")
         print(f"  - HTML: {filename}")
 
-    # Also, let's create a simple test to verify our JSON data
-    def create_test_json(self, filename: str) -> None:
-        """Create a simple test JSON to verify the system works"""
+    # # Also, let's create a simple test to verify our JSON data
+    # def create_test_json(self, filename: str) -> None:
+    #     """Create a simple test JSON to verify the system works"""
         
-        test_data = {
-            "title": "Test Song",
-            "composer": "Music DSL",
-            "tempo": 120,
-            "time_signature": "4/4",
-            "key_signature": "C",
-            "staves": [
-                {
-                    "name": "Piano",
-                    "clef": "treble",
-                    "color": "#2E86AB",
-                    "channel": 0,
-                    "measures": [
-                        [
-                            {"keys": ["c/4"], "duration": "q", "velocity": 80, "start_time": 0.0, "midi_note": 60},
-                            {"keys": ["d/4"], "duration": "q", "velocity": 80, "start_time": 1.0, "midi_note": 62},
-                            {"keys": ["e/4"], "duration": "q", "velocity": 80, "start_time": 2.0, "midi_note": 64},
-                            {"keys": ["f/4"], "duration": "q", "velocity": 80, "start_time": 3.0, "midi_note": 65}
-                        ],
-                        [
-                            {"keys": ["g/4"], "duration": "q", "velocity": 80, "start_time": 4.0, "midi_note": 67},
-                            {"keys": ["a/4"], "duration": "q", "velocity": 80, "start_time": 5.0, "midi_note": 69},
-                            {"keys": ["b/4"], "duration": "q", "velocity": 80, "start_time": 6.0, "midi_note": 71},
-                            {"keys": ["c/5"], "duration": "q", "velocity": 80, "start_time": 7.0, "midi_note": 72}
-                        ]
-                    ]
-                }
-            ]
-        }
+    #     test_data = {
+    #         "title": "Test Song",
+    #         "composer": "Music DSL",
+    #         "tempo": 120,
+    #         "time_signature": "4/4",
+    #         "key_signature": "C",
+    #         "staves": [
+    #             {
+    #                 "name": "Piano",
+    #                 "clef": "treble",
+    #                 "color": "#2E86AB",
+    #                 "channel": 0,
+    #                 "measures": [
+    #                     [
+    #                         {"keys": ["c/4"], "duration": "q", "velocity": 80, "start_time": 0.0, "midi_note": 60},
+    #                         {"keys": ["d/4"], "duration": "q", "velocity": 80, "start_time": 1.0, "midi_note": 62},
+    #                         {"keys": ["e/4"], "duration": "q", "velocity": 80, "start_time": 2.0, "midi_note": 64},
+    #                         {"keys": ["f/4"], "duration": "q", "velocity": 80, "start_time": 3.0, "midi_note": 65}
+    #                     ],
+    #                     [
+    #                         {"keys": ["g/4"], "duration": "q", "velocity": 80, "start_time": 4.0, "midi_note": 67},
+    #                         {"keys": ["a/4"], "duration": "q", "velocity": 80, "start_time": 5.0, "midi_note": 69},
+    #                         {"keys": ["b/4"], "duration": "q", "velocity": 80, "start_time": 6.0, "midi_note": 71},
+    #                         {"keys": ["c/5"], "duration": "q", "velocity": 80, "start_time": 7.0, "midi_note": 72}
+    #                     ]
+    #                 ]
+    #             }
+    #         ]
+    #     }
         
-        test_filename = filename.replace('.html', '_test.json')
-        with open(test_filename, 'w') as f:
-            json.dump(test_data, f, indent=2)
+    #     test_filename = filename.replace('.html', '_test.json')
+    #     with open(test_filename, 'w') as f:
+    #         json.dump(test_data, f, indent=2)
         
-        print(f"Test JSON created: {test_filename}")
-        return test_filename
+    #     print(f"Test JSON created: {test_filename}")
+    #     return test_filename
 
     def midi_to_vexflow_note(self, midi_note: int, is_drum: bool = False) -> str:
         """Convert MIDI note number to VexFlow note string"""

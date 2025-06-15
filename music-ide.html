@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music DSL - Web IDE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .editor-panel, .output-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #4a5568;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .code-editor {
+            width: 100%;
+            height: 400px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            background: #f7fafc;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .code-editor:focus {
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .btn.danger {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #718096, #4a5568);
+        }
+
+        .audio-player {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .status.loading {
+            background: #bee3f8;
+            color: #2c5282;
+            border-left: 4px solid #4299e1;
+        }
+
+        .status.success {
+            background: #c6f6d5;
+            color: #22543d;
+            border-left: 4px solid #48bb78;
+        }
+
+        .status.error {
+            background: #fed7d7;
+            color: #742a2a;
+            border-left: 4px solid #f56565;
+        }
+
+        .sheet-music {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .examples {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            color: white;
+        }
+
+        .example-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+
+        .example-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            border-radius: 3px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Music DSL Web IDE</h1>
+            <p>Create beautiful music with code - Write, Generate, Listen & Download</p>
+        </div>
+
+        <div class="main-content">
+            <div class="editor-panel">
+                <div class="panel-title">📝 Music Code Editor</div>
+                <textarea class="code-editor" id="codeEditor" placeholder="Write your Music DSL code here...">// Nyan Cat Music Recreation
+PianoTrack {
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "f";
+
+    // Simple melody pattern
+    for (i = 0; i < 2; i += 1) {
+        Piano(R, C5, 0.25);
+        Piano(R, D5, 0.25);
+        Piano(R, E5, 0.25);
+        Piano(R, F5, 0.25);
+        Piano(R, G5, 0.25);
+        Piano(R, A5, 0.25);
+        Piano(R, B5, 0.25);
+        Piano(R, C6, 0.25);
+    }
+}
+
+BassTrack {
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mf";
+
+    for (i = 0; i < 4; i += 1) {
+        Bass(4, 0, 0.5);
+        Bass(3, 2, 0.5);
+        Bass(4, 0, 0.5);
+        Bass(3, 2, 0.5);
+    }
+}
+
+DrumTrack {
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mf";
+
+    for (i = 0; i < 8; i += 1) {
+        Drum(KICK, 0.25);
+        Drum(HIHAT_CLOSED, 0.25);
+        Drum(SNARE, 0.25);
+        Drum(HIHAT_CLOSED, 0.25);
+    }
+}</textarea>
+
+                <div class="controls">
+                    <button class="btn success" onclick="generateMusic()">🎵 Generate Music</button>
+                    <button class="btn secondary" onclick="clearEditor()">🗑️ Clear</button>
+                    <button class="btn secondary" onclick="downloadCode()">💾 Save Code</button>
+                </div>
+
+                <div id="status" style="display: none;"></div>
+                <div class="progress-bar" id="progressBar" style="display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <div class="output-panel">
+                <div class="panel-title">🎼 Generated Output</div>
+                
+                <div class="audio-player" id="audioPlayer" style="display: none;">
+                    <div><strong>🎧 Audio Player</strong></div>
+                    <audio controls id="audioElement">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div style="margin-top: 10px; font-size: 14px; color: #666;">
+                        Click play to listen to your generated music!
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" onclick="downloadMIDI()" id="downloadMIDIBtn" style="display: none;">📥 Download MIDI</button>
+                    <button class="btn" onclick="downloadMP3()" id="downloadMP3Btn" style="display: none;">🎵 Download MP3</button>
+                    <button class="btn" onclick="downloadSheetMusic()" id="downloadSheetBtn" style="display: none;">📄 Download Sheet Music</button>
+                </div>
+
+                <div id="outputInfo" class="status" style="display: none;"></div>
+            </div>
+        </div>
+
+        <div class="examples">
+            <div class="panel-title" style="color: white; border-color: rgba(255,255,255,0.3);">📚 Example Songs</div>
+            <p style="margin-bottom: 15px;">Try these examples to get started:</p>
+            <button class="example-btn" onclick="loadExample('simple')">🎹 Simple Piano</button>
+            <button class="example-btn" onclick="loadExample('nyan')">🌈 Nyan Cat</button>
+            <button class="example-btn" onclick="loadExample('classical')">🎼 Classical Pattern</button>
+            <button class="example-btn" onclick="loadExample('drums')">🥁 Drum Pattern</button>
+        </div>
+
+        <div class="sheet-music" id="sheetMusic" style="display: none;">
+            <div class="panel-title">📊 Sheet Music</div>
+            <div id="sheetMusicContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        let generatedFiles = {
+            midi: null,
+            mp3: null,
+            sheetMusic: null,
+            sessionId: null
+        };
+
+        // Backend URL - change this to your server URL
+        const BACKEND_URL = 'http://localhost:5000';
+
+        const examples = {
+            simple: `// Simple Piano Melody
+PianoTrack {
+    TimeSignature = 4/4;
+    Tempo = 120;
+    Volume = "mf";
+    
+    Piano(R, C4, 1.0);
+    Piano(R, D4, 1.0);
+    Piano(R, E4, 1.0);
+    Piano(R, F4, 1.0);
+    Piano(R, G4, 2.0);
+}`,
+            
+            nyan: `// Nyan Cat Recreation
+PianoTrack {
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "f";
+
+    for (i = 0; i < 2; i += 1) {
+        Piano(R, C5, 0.125);
+        Piano(R, D5, 0.125);
+        Piano(R, E5, 0.25);
+        Piano(R, C5, 0.25);
+        Piano(R, D5, 0.125);
+        Piano(R, E5, 0.125);
+        Piano(R, F5, 0.25);
+    }
+}
+
+BassTrack {
+    TimeSignature = 4/4;
+    Tempo = 142;
+    Volume = "mf";
+    
+    for (i = 0; i < 4; i += 1) {
+        Bass(4, 0, 0.5);
+        Bass(3, 2, 0.5);
+    }
+}`,
+
+            classical: `// Classical Pattern
+PianoTrack {
+    TimeSignature = 3/4;
+    Tempo = 100;
+    Volume = "mp";
+    
+    // Waltz pattern
+    for (i = 0; i < 4; i += 1) {
+        Piano(L, C3, 1.0);
+        Piano(R, E4, 0.5);
+        Piano(R, G4, 0.5);
+        Piano(R, C5, 0.5);
+        Piano(R, G4, 0.5);
+    }
+}`,
+
+            drums: `// Drum Pattern
+DrumTrack {
+    TimeSignature = 4/4;
+    Tempo = 130;
+    Volume = "f";
+    
+    for (i = 0; i < 8; i += 1) {
+        Drum(KICK, 0.5);
+        Drum(SNARE, 0.5);
+        Drum(HIHAT_CLOSED, 0.25);
+        Drum(HIHAT_CLOSED, 0.25);
+        Drum(KICK, 0.25);
+        Drum(SNARE, 0.25);
+    }
+}`
+        };
+
+        function loadExample(type) {
+            if (examples[type]) {
+                document.getElementById('codeEditor').value = examples[type];
+                showStatus('Example loaded! Click "Generate Music" to hear it.', 'success');
+            }
+        }
+
+        function clearEditor() {
+            document.getElementById('codeEditor').value = '';
+            hideGeneratedContent();
+        }
+
+        function downloadCode() {
+            const code = document.getElementById('codeEditor').value;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'music-dsl-code.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function showStatus(message, type = 'loading') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = 'status ' + type;
+            status.style.display = 'block';
+        }
+
+        function hideStatus() {
+            document.getElementById('status').style.display = 'none';
+        }
+
+        function showProgress(percent) {
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            progressBar.style.display = 'block';
+            progressFill.style.width = percent + '%';
+        }
+
+        function hideProgress() {
+            document.getElementById('progressBar').style.display = 'none';
+        }
+
+        function showGeneratedContent(audioUrl, info) {
+            // Show audio player
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioElement = document.getElementById('audioElement');
+            audioElement.src = audioUrl;
+            audioPlayer.style.display = 'block';
+
+            // Show download buttons
+            document.getElementById('downloadMIDIBtn').style.display = 'inline-block';
+            document.getElementById('downloadMP3Btn').style.display = 'inline-block';
+            document.getElementById('downloadSheetBtn').style.display = 'inline-block';
+
+            // Show output info
+            const outputInfo = document.getElementById('outputInfo');
+            outputInfo.innerHTML = info;
+            outputInfo.className = 'status success';
+            outputInfo.style.display = 'block';
+        }
+
+        function hideGeneratedContent() {
+            document.getElementById('audioPlayer').style.display = 'none';
+            document.getElementById('downloadMIDIBtn').style.display = 'none';
+            document.getElementById('downloadMP3Btn').style.display = 'none';
+            document.getElementById('downloadSheetBtn').style.display = 'none';
+            document.getElementById('outputInfo').style.display = 'none';
+            document.getElementById('sheetMusic').style.display = 'none';
+        }
+
+        async function generateMusic() {
+            const code = document.getElementById('codeEditor').value.trim();
+            
+            if (!code) {
+                showStatus('Please enter some Music DSL code first!', 'error');
+                return;
+            }
+
+            hideGeneratedContent();
+            showStatus('🎵 Processing your music code...', 'loading');
+            showProgress(10);
+
+            try {
+                // Send code to backend
+                showProgress(20);
+                showStatus('📤 Sending code to server...', 'loading');
+                
+                const response = await fetch(BACKEND_URL + '/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: code })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Server error');
+                }
+
+                showProgress(50);
+                showStatus('🎼 Processing music...', 'loading');
+
+                const result = await response.json();
+                
+                if (!result.success) {
+                    throw new Error(result.error || 'Unknown error');
+                }
+
+                showProgress(80);
+                showStatus('🎧 Loading audio...', 'loading');
+
+                // Store session info
+                generatedFiles.sessionId = result.session_id;
+                generatedFiles.midi = BACKEND_URL + result.files.midi;
+                generatedFiles.mp3 = BACKEND_URL + '/audio/' + result.session_id;
+                generatedFiles.sheetMusic = BACKEND_URL + result.files.sheet_html;
+
+                showProgress(100);
+                hideProgress();
+                showStatus('✅ Music generated successfully!', 'success');
+                
+                const info = '<strong>🎵 Generation Complete!</strong><br>' +
+                    '📏 Duration: ~' + Math.round(result.duration || 30) + ' seconds<br>' +
+                    '🎼 Tracks: ' + result.tracks_count + '<br>' +
+                    '🎵 Events: ' + result.events_count + '<br>' +
+                    '⏱️ Session: ' + result.session_id;
+                
+                showGeneratedContent(generatedFiles.mp3, info);
+                
+                // Generate sheet music if data is available
+                if (result.sheet_data) {
+                    generateSheetMusicFromData(result.sheet_data);
+                }
+                
+            } catch (error) {
+                hideProgress();
+                showStatus('❌ Error generating music: ' + error.message, 'error');
+                console.error('Generation error:', error);
+            }
+        }
+
+        function generateSheetMusicFromData(sheetData) {
+            const sheetMusic = document.getElementById('sheetMusic');
+            const container = document.getElementById('sheetMusicContainer');
+            
+            if (!sheetData || !sheetData.staves) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; background: #f7fafc; border-radius: 8px;">' +
+                    '<h3>❌ No Sheet Music Data</h3>' +
+                    '<p style="color: #666;">Sheet music data was not generated properly.</p>' +
+                    '</div>';
+                sheetMusic.style.display = 'block';
+                return;
+            }
+
+            // Show a preview with option to view full sheet music
+            container.innerHTML = '<div style="text-align: center; padding: 40px; background: #e6ffe6; border-radius: 8px;">' +
+                '<h3>✅ Sheet Music Generated Successfully!</h3>' +
+                '<p style="color: #22543d; margin: 15px 0;">Your sheet music has been created with ' + sheetData.staves.length + ' staves.</p>' +
+                '<div style="margin: 20px 0;">' +
+                '<button class="btn success" onclick="viewFullSheetMusic()" style="margin: 5px;">🎼 View Full Sheet Music</button>' +
+                '<button class="btn" onclick="tryLoadVexFlowHere()" style="margin: 5px;">🔄 Try Load Here</button>' +
+                '</div>' +
+                '<p style="font-size: 14px; color: #666;">Sheet music contains: ' +
+                sheetData.staves.map(function(staff) { return staff.name + ' (' + staff.measures.length + ' measures)'; }).join(', ') +
+                '</p>' +
+                '</div>';
+            
+            sheetMusic.style.display = 'block';
+            
+            // Store sheet data globally for later use
+            window.currentSheetData = sheetData;
+        }
+
+        function viewFullSheetMusic() {
+            if (generatedFiles.sessionId) {
+                // Open the standalone sheet music page
+                const sheetUrl = BACKEND_URL + '/download/' + generatedFiles.sessionId + '/sheet_html';
+                window.open(sheetUrl, '_blank');
+                showStatus('🎼 Opening sheet music in new tab...', 'success');
+                setTimeout(hideStatus, 2000);
+            }
+        }
+
+        function tryLoadVexFlowHere() {
+            const container = document.getElementById('sheetMusicContainer');
+            
+            container.innerHTML = '<div style="text-align: center; padding: 40px;">' +
+                '<div>🔄 Attempting to load VexFlow...</div>' +
+                '<div class="progress-bar" style="margin: 20px 0;">' +
+                '<div class="progress-fill" id="vexflowProgress" style="width: 10%;"></div>' +
+                '</div>' +
+                '<p style="font-size: 14px; color: #666;">This may take a moment...</p>' +
+                '</div>';
+
+            // Try multiple CDN sources
+            const vexflowSources = [
+                'https://unpkg.com/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.2/vexflow-min.js'
+            ];
+
+            let sourceIndex = 0;
+            
+            function tryNextSource() {
+                if (sourceIndex >= vexflowSources.length) {
+                    container.innerHTML = '<div style="text-align: center; padding: 40px; background: #fed7d7; border-radius: 8px;">' +
+                        '<h3>❌ VexFlow Could Not Load</h3>' +
+                        '<p style="color: #742a2a;">All CDN sources failed. Please check your internet connection.</p>' +
+                        '<button class="btn" onclick="viewFullSheetMusic()" style="margin-top: 15px;">🎼 View in Separate Tab Instead</button>' +
+                        '</div>';
+                    return;
+                }
+
+                const progressPercent = 20 + (sourceIndex * 30);
+                document.getElementById('vexflowProgress').style.width = progressPercent + '%';
+
+                const script = document.createElement('script');
+                script.src = vexflowSources[sourceIndex];
+                
+                script.onload = function() {
+                    document.getElementById('vexflowProgress').style.width = '90%';
+                    
+                    setTimeout(function() {
+                        if (typeof Vex !== 'undefined' && window.currentSheetData) {
+                            document.getElementById('vexflowProgress').style.width = '100%';
+                            setTimeout(function() {
+                                renderVexFlowSheet(window.currentSheetData, container);
+                            }, 500);
+                        } else {
+                            sourceIndex++;
+                            tryNextSource();
+                        }
+                    }, 1000);
+                };
+                
+                script.onerror = function() {
+                    sourceIndex++;
+                    tryNextSource();
+                };
+                
+                document.head.appendChild(script);
+            }
+
+            tryNextSource();
+        }
+
+        function loadVexFlowAndRender(sheetData, container) {
+            container.innerHTML = '<div style="text-align: center; padding: 40px;">' +
+                '<div>🎼 Loading VexFlow for sheet music...</div>' +
+                '<div class="progress-bar" style="margin: 20px 0;">' +
+                '<div class="progress-fill" style="width: 50%;"></div>' +
+                '</div>' +
+                '</div>';
+
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/vexflow@4.2.2/build/vexflow-min.js';
+            
+            script.onload = function() {
+                setTimeout(function() {
+                    if (typeof Vex !== 'undefined') {
+                        renderVexFlowSheet(sheetData, container);
+                    } else {
+                        container.innerHTML = '<div style="text-align: center; padding: 40px; background: #fed7d7; border-radius: 8px;">' +
+                            '<h3>❌ VexFlow Loading Failed</h3>' +
+                            '<p style="color: #742a2a;">Could not load sheet music renderer.</p>' +
+                            '</div>';
+                    }
+                }, 500);
+            };
+            
+            script.onerror = function() {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; background: #fed7d7; border-radius: 8px;">' +
+                    '<h3>❌ VexFlow Failed to Load</h3>' +
+                    '<p style="color: #742a2a;">Check your internet connection and try again.</p>' +
+                    '</div>';
+            };
+            
+            document.head.appendChild(script);
+        }
+
+        function renderVexFlowSheet(sheetData, container) {
+            try {
+                container.innerHTML = ''; // Clear loading message
+                
+                const VF = Vex.Flow;
+                
+                // Create title
+                const titleDiv = document.createElement('div');
+                titleDiv.style.textAlign = 'center';
+                titleDiv.style.marginBottom = '30px';
+                titleDiv.innerHTML = '<h2>' + sheetData.title + '</h2>' +
+                    '<p style="color: #666;">' + sheetData.composer + '</p>' +
+                    '<p style="font-size: 14px; margin-top: 10px;">' +
+                    'Tempo: ♩ = ' + sheetData.tempo + ' BPM | ' +
+                    'Time: ' + sheetData.time_signature + ' | ' +
+                    'Key: ' + sheetData.key_signature + ' Major' +
+                    '</p>';
+                container.appendChild(titleDiv);
+
+                // Render each staff
+                sheetData.staves.forEach(function(staffData, index) {
+                    const staffDiv = document.createElement('div');
+                    staffDiv.style.margin = '30px 0';
+                    staffDiv.style.padding = '20px';
+                    staffDiv.style.background = 'white';
+                    staffDiv.style.borderRadius = '8px';
+                    staffDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+                    
+                    const titleEl = document.createElement('h3');
+                    titleEl.textContent = staffData.name;
+                    titleEl.style.color = staffData.color;
+                    titleEl.style.marginBottom = '15px';
+                    staffDiv.appendChild(titleEl);
+                    
+                    const svgDiv = document.createElement('div');
+                    svgDiv.id = 'staff-' + index;
+                    staffDiv.appendChild(svgDiv);
+                    
+                    container.appendChild(staffDiv);
+                    
+                    // Render this staff
+                    renderStaffVexFlow(staffData, svgDiv);
+                });
+
+            } catch (error) {
+                console.error('Error rendering sheet music:', error);
+                container.innerHTML = '<div style="text-align: center; padding: 40px; background: #fed7d7; border-radius: 8px;">' +
+                    '<h3>❌ Sheet Music Rendering Error</h3>' +
+                    '<p style="color: #742a2a;">' + error.message + '</p>' +
+                    '</div>';
+            }
+        }
+
+        function renderStaffVexFlow(staffData, container) {
+            const VF = Vex.Flow;
+            
+            if (!staffData.measures || staffData.measures.length === 0) {
+                container.innerHTML = '<p>No measures found for this staff.</p>';
+                return;
+            }
+            
+            const measuresPerLine = 4;
+            const measureWidth = 200;
+            const lineHeight = 150;
+            const totalMeasures = staffData.measures.length;
+            const totalLines = Math.ceil(totalMeasures / measuresPerLine);
+            
+            const width = Math.min(totalMeasures, measuresPerLine) * measureWidth + 100;
+            const height = totalLines * lineHeight + 50;
+
+            const renderer = new VF.Renderer(container, VF.Renderer.Backends.SVG);
+            renderer.resize(width, height);
+            const context = renderer.getContext();
+
+            let currentY = 40;
+            let measureIndex = 0;
+
+            for (let line = 0; line < totalLines; line++) {
+                const measuresInThisLine = Math.min(measuresPerLine, totalMeasures - measureIndex);
+                
+                for (let m = 0; m < measuresInThisLine; m++) {
+                    const x = m * measureWidth + 50;
+                    const stave = new VF.Stave(x, currentY, measureWidth - 20);
+                    
+                    if (measureIndex === 0) {
+                        stave.addClef(staffData.clef);
+                        stave.addTimeSignature('4/4');
+                        if (staffData.clef !== 'percussion') {
+                            stave.addKeySignature('B');
+                        }
+                    }
+                    
+                    stave.setContext(context).draw();
+
+                    if (measureIndex < staffData.measures.length) {
+                        const measureNotes = staffData.measures[measureIndex];
+                        if (measureNotes && measureNotes.length > 0) {
+                            try {
+                                const notes = measureNotes.map(function(noteData) {
+                                    return new VF.StaveNote({
+                                        clef: staffData.clef,
+                                        keys: noteData.keys,
+                                        duration: noteData.duration
+                                    });
+                                });
+
+                                const voice = new VF.Voice({num_beats: 4, beat_value: 4});
+                                voice.setStrict(false);
+                                voice.addTickables(notes);
+
+                                const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth - 40);
+                                voice.draw(context, stave);
+                                
+                            } catch (error) {
+                                console.error('Error rendering measure ' + measureIndex + ':', error);
+                            }
+                        }
+                    }
+                    
+                    measureIndex++;
+                }
+                
+                currentY += lineHeight;
+            }
+        }
+
+        function downloadMIDI() {
+            if (generatedFiles.sessionId) {
+                const link = document.createElement('a');
+                link.href = BACKEND_URL + '/download/' + generatedFiles.sessionId + '/midi';
+                link.download = 'generated_music.mid';
+                link.click();
+                showStatus('📥 MIDI download started!', 'success');
+                setTimeout(hideStatus, 2000);
+            } else {
+                showStatus('❌ No MIDI file available', 'error');
+                setTimeout(hideStatus, 2000);
+            }
+        }
+
+        function downloadMP3() {
+            if (generatedFiles.sessionId) {
+                const link = document.createElement('a');
+                link.href = BACKEND_URL + '/download/' + generatedFiles.sessionId + '/mp3';
+                link.download = 'generated_music.mp3';
+                link.click();
+                showStatus('🎵 MP3 download started!', 'success');
+                setTimeout(hideStatus, 2000);
+            } else {
+                showStatus('❌ No MP3 file available', 'error');
+                setTimeout(hideStatus, 2000);
+            }
+        }
+
+        function downloadSheetMusic() {
+            if (generatedFiles.sessionId) {
+                const link = document.createElement('a');
+                link.href = BACKEND_URL + '/download/' + generatedFiles.sessionId + '/sheet_html';
+                link.download = 'sheet_music.html';
+                link.click();
+                showStatus('📄 Sheet music download started!', 'success');
+                setTimeout(hideStatus, 2000);
+            } else {
+                showStatus('❌ No sheet music available', 'error');
+                setTimeout(hideStatus, 2000);
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(function(resolve) {
+                setTimeout(resolve, ms);
+            });
+        }
+
+        // Initialize with welcome message
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus('👋 Welcome! Edit the code and click "Generate Music" to start creating!', 'success');
+            setTimeout(hideStatus, 4000);
+        });
+    </script>
+</body>
+</html>
