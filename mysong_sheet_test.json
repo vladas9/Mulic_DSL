@@ -1,0 +1,93 @@
+{
+  "title": "Test Song",
+  "composer": "Music DSL",
+  "tempo": 120,
+  "time_signature": "4/4",
+  "key_signature": "C",
+  "staves": [
+    {
+      "name": "Piano",
+      "clef": "treble",
+      "color": "#2E86AB",
+      "channel": 0,
+      "measures": [
+        [
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 0.0,
+            "midi_note": 60
+          },
+          {
+            "keys": [
+              "d/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 1.0,
+            "midi_note": 62
+          },
+          {
+            "keys": [
+              "e/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 2.0,
+            "midi_note": 64
+          },
+          {
+            "keys": [
+              "f/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 3.0,
+            "midi_note": 65
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 4.0,
+            "midi_note": 67
+          },
+          {
+            "keys": [
+              "a/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 5.0,
+            "midi_note": 69
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 6.0,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "c/5"
+            ],
+            "duration": "q",
+            "velocity": 80,
+            "start_time": 7.0,
+            "midi_note": 72
+          }
+        ]
+      ]
+    }
+  ]
+}

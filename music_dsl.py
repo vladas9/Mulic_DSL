@@ -8,6 +8,7 @@ from midiutil import MIDIFile
 import numpy as np
 import sys
 import wave
+import json
 
 ##############################
 # LEXER
@@ -1572,7 +1573,642 @@ class Interpreter:
                     os.remove(temp_wav)
                 except:
                     pass
+    
+    def generate_vexflow_data(self, filename: str) -> None:
+        """Generate JSON data for VexFlow sheet music rendering"""
+        
+        print(f"Starting VexFlow data generation...")
+        print(f"Total events to process: {len(self.events)}")
+        
+        # Group events by channel/instrument
+        events_by_channel = {}
+        for event in self.events:
+            if isinstance(event, NoteEvent):
+                if event.channel not in events_by_channel:
+                    events_by_channel[event.channel] = []
+                events_by_channel[event.channel].append(event)
+        
+        print(f"Events grouped by channel: {list(events_by_channel.keys())}")
+        for channel, events in events_by_channel.items():
+            print(f"  Channel {channel}: {len(events)} events")
+        
+        # Channel to instrument mapping
+        channel_info = {
+            0: {"name": "Piano", "clef": "treble", "color": "#2E86AB"},
+            1: {"name": "Guitar", "clef": "treble", "color": "#A23B72"},
+            2: {"name": "Bass", "clef": "bass", "color": "#F18F01"},
+            9: {"name": "Drums", "clef": "percussion", "color": "#C73E1D"}
+        }
+        
+        # Prepare the data structure for VexFlow
+        sheet_data = {
+            "title": "Nyan Cat Music",
+            "composer": "Music DSL",
+            "tempo": self.tempo_events[0].tempo if self.tempo_events else 120,
+            "time_signature": f"{self.current_time_signature[0]}/{self.current_time_signature[1]}",
+            "key_signature": "B",
+            "staves": []
+        }
+        
+        # Process each instrument
+        for channel, events in events_by_channel.items():
+            if not events:
+                continue
+                
+            info = channel_info.get(channel, {"name": f"Channel {channel}", "clef": "treble", "color": "#000000"})
+            print(f"Processing {info['name']} with {len(events)} events...")
+            
+            # Sort events by start time
+            events.sort(key=lambda e: e.start_time)
+            
+            # For simplicity, let's just take the first 32 notes to avoid too complex measures
+            limited_events = events[:32]
+            
+            # Group notes into measures (assuming 4/4 time)
+            measures = []
+            current_measure = []
+            current_measure_time = 0.0
+            measure_length = 4.0  # 4 beats per measure in 4/4 time
+            
+            for event in limited_events:
+                # If this note would go into the next measure or we have 8 notes already
+                if current_measure_time + event.duration > measure_length or len(current_measure) >= 8:
+                    # Finish current measure
+                    if current_measure:
+                        measures.append(current_measure)
+                        current_measure = []
+                        current_measure_time = 0.0
+                
+                # Convert MIDI note to VexFlow notation
+                note_name = self.midi_to_vexflow_note(event.note_value, channel == 9)
+                duration = self.duration_to_vexflow(event.duration)
+                
+                note_data = {
+                    "keys": [note_name],
+                    "duration": duration,
+                    "velocity": event.velocity,
+                    "start_time": event.start_time,
+                    "midi_note": event.note_value
+                }
+                
+                current_measure.append(note_data)
+                current_measure_time += event.duration
+            
+            # Add the last measure
+            if current_measure:
+                measures.append(current_measure)
+            
+            print(f"  Created {len(measures)} measures for {info['name']}")
+            
+            # Create staff data
+            staff_data = {
+                "name": info["name"],
+                "clef": info["clef"],
+                "color": info["color"],
+                "channel": channel,
+                "measures": measures
+            }
+            
+            sheet_data["staves"].append(staff_data)
+        
+        # Save the JSON data
+        json_filename = filename.replace('.html', '.json')
+        print(f"Saving JSON to: {json_filename}")
+        
+        try:
+            with open(json_filename, 'w') as f:
+                json.dump(sheet_data, f, indent=2)
+            print(f"JSON file saved successfully!")
+            
+            # Verify the file was created
+            if os.path.exists(json_filename):
+                file_size = os.path.getsize(json_filename)
+                print(f"JSON file size: {file_size} bytes")
+            else:
+                print("ERROR: JSON file was not created!")
+                
+        except Exception as e:
+            print(f"ERROR saving JSON file: {e}")
+            return
+        
+        # Generate the HTML file with VexFlow
+        print(f"Generating HTML file: {filename}")
+        try:
+            self.generate_vexflow_html(filename, json_filename)
+            print(f"HTML file generated successfully!")
+            
+            # Verify HTML file
+            if os.path.exists(filename):
+                file_size = os.path.getsize(filename)
+                print(f"HTML file size: {file_size} bytes")
+            else:
+                print("ERROR: HTML file was not created!")
+                
+        except Exception as e:
+            print(f"ERROR generating HTML file: {e}")
+            return
+        
+        print(f"VexFlow generation completed!")
+        print(f"Files created:")
+        print(f"  - Data: {json_filename}")
+        print(f"  - HTML: {filename}")
 
+    # Also, let's create a simple test to verify our JSON data
+    def create_test_json(self, filename: str) -> None:
+        """Create a simple test JSON to verify the system works"""
+        
+        test_data = {
+            "title": "Test Song",
+            "composer": "Music DSL",
+            "tempo": 120,
+            "time_signature": "4/4",
+            "key_signature": "C",
+            "staves": [
+                {
+                    "name": "Piano",
+                    "clef": "treble",
+                    "color": "#2E86AB",
+                    "channel": 0,
+                    "measures": [
+                        [
+                            {"keys": ["c/4"], "duration": "q", "velocity": 80, "start_time": 0.0, "midi_note": 60},
+                            {"keys": ["d/4"], "duration": "q", "velocity": 80, "start_time": 1.0, "midi_note": 62},
+                            {"keys": ["e/4"], "duration": "q", "velocity": 80, "start_time": 2.0, "midi_note": 64},
+                            {"keys": ["f/4"], "duration": "q", "velocity": 80, "start_time": 3.0, "midi_note": 65}
+                        ],
+                        [
+                            {"keys": ["g/4"], "duration": "q", "velocity": 80, "start_time": 4.0, "midi_note": 67},
+                            {"keys": ["a/4"], "duration": "q", "velocity": 80, "start_time": 5.0, "midi_note": 69},
+                            {"keys": ["b/4"], "duration": "q", "velocity": 80, "start_time": 6.0, "midi_note": 71},
+                            {"keys": ["c/5"], "duration": "q", "velocity": 80, "start_time": 7.0, "midi_note": 72}
+                        ]
+                    ]
+                }
+            ]
+        }
+        
+        test_filename = filename.replace('.html', '_test.json')
+        with open(test_filename, 'w') as f:
+            json.dump(test_data, f, indent=2)
+        
+        print(f"Test JSON created: {test_filename}")
+        return test_filename
+
+    def midi_to_vexflow_note(self, midi_note: int, is_drum: bool = False) -> str:
+        """Convert MIDI note number to VexFlow note string"""
+        if is_drum:
+            # Drum mapping for percussion clef
+            drum_notes = {
+                36: "c/4",  # Kick
+                38: "c/4",  # Snare  
+                42: "g/5",  # Closed Hi-hat
+                46: "a/5",  # Open Hi-hat
+                44: "f#/5", # Pedal Hi-hat
+                51: "d/5",  # Ride
+                49: "a/5"   # Crash
+            }
+            return drum_notes.get(midi_note, "c/4")
+        
+        # Standard note conversion
+        note_names = ['c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b']
+        octave = (midi_note // 12) - 1
+        note_index = midi_note % 12
+        note_name = note_names[note_index]
+        
+        return f"{note_name}/{octave}"
+
+    def duration_to_vexflow(self, duration: float) -> str:
+        """Convert duration to VexFlow duration string"""
+        # Map durations to VexFlow note values
+        if duration >= 4.0:
+            return "w"      # whole note
+        elif duration >= 2.0:
+            return "h"      # half note
+        elif duration >= 1.0:
+            return "q"      # quarter note
+        elif duration >= 0.5:
+            return "8"      # eighth note
+        elif duration >= 0.25:
+            return "16"     # sixteenth note
+        elif duration >= 0.125:
+            return "32"     # thirty-second note
+        else:
+            return "64"     # sixty-fourth note
+
+    def generate_vexflow_html(self, html_filename: str, json_filename: str) -> None:
+        """Generate HTML file with VexFlow rendering and embedded JSON data"""
+        
+        # Read the JSON data to embed it directly
+        try:
+            with open(json_filename, 'r') as f:
+                json_data = f.read()
+        except Exception as e:
+            print(f"Error reading JSON file: {e}")
+            return
+        
+        html_content = f'''<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Music DSL Sheet Music</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f9f9f9;
+            }}
+            
+            .header {{
+                text-align: center;
+                margin-bottom: 30px;
+            }}
+            
+            .title {{
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }}
+            
+            .composer {{
+                font-size: 18px;
+                color: #666;
+                margin-bottom: 10px;
+            }}
+            
+            .tempo-info {{
+                margin: 20px 0;
+                text-align: center;
+                font-size: 16px;
+                background-color: #e8f4f8;
+                padding: 10px;
+                border-radius: 5px;
+                border-left: 4px solid #2E86AB;
+            }}
+            
+            .staff-container {{
+                margin: 30px 0;
+                padding: 25px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }}
+            
+            .staff-title {{
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #333;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 10px;
+            }}
+            
+            #output {{
+                max-width: 1400px;
+                margin: 0 auto;
+            }}
+            
+            .controls {{
+                text-align: center;
+                margin-bottom: 30px;
+            }}
+            
+            button {{
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 12px 24px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 6px 8px;
+                cursor: pointer;
+                border-radius: 6px;
+                transition: background-color 0.3s;
+            }}
+            
+            button:hover {{
+                background-color: #45a049;
+                transform: translateY(-1px);
+            }}
+            
+            .loading {{
+                text-align: center;
+                font-size: 18px;
+                color: #666;
+                margin: 50px 0;
+            }}
+            
+            .error {{
+                background-color: #ffe6e6;
+                color: #d00;
+                padding: 15px;
+                border-radius: 5px;
+                margin: 20px 0;
+                border-left: 4px solid #d00;
+            }}
+            
+            .success {{
+                background-color: #e6ffe6;
+                color: #008000;
+                padding: 15px;
+                border-radius: 5px;
+                margin: 20px 0;
+                border-left: 4px solid #008000;
+            }}
+        </style>
+    </head>
+    <body>
+        <div id="output">
+            <div class="header">
+                <div class="title" id="song-title">Loading...</div>
+                <div class="composer" id="composer">Music DSL</div>
+            </div>
+            
+            <div class="controls">
+                <button onclick="downloadAsPNG()">📥 Download as PNG</button>
+                <button onclick="downloadAsSVG()">📄 Download as SVG</button>
+                <button onclick="downloadAsJSON()">📋 Download JSON Data</button>
+                <button onclick="reloadVexFlow()">🔄 Reload VexFlow</button>
+            </div>
+            
+            <div class="tempo-info" id="tempo-info">Loading...</div>
+            
+            <div id="staff-container">
+                <div class="loading">🎵 Loading VexFlow library...</div>
+            </div>
+        </div>
+
+        <script>
+            // Embedded JSON data
+            const musicData = {json_data};
+            
+            let vexflowLoaded = false;
+            let loadAttempts = 0;
+            const maxAttempts = 3;
+
+            // Multiple CDN sources for VexFlow
+            const vexflowSources = [
+                'https://unpkg.com/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.2/vexflow-min.js'
+            ];
+
+            function loadVexFlow(sourceIndex = 0) {{
+                if (sourceIndex >= vexflowSources.length) {{
+                    document.getElementById('staff-container').innerHTML = 
+                        '<div class="error">❌ Failed to load VexFlow from all CDN sources. Please check your internet connection and try refreshing the page.</div>';
+                    return;
+                }}
+
+                const script = document.createElement('script');
+                script.src = vexflowSources[sourceIndex];
+                
+                script.onload = function() {{
+                    console.log(`VexFlow loaded successfully from: ${{vexflowSources[sourceIndex]}}`);
+                    vexflowLoaded = true;
+                    
+                    // Wait a moment for VexFlow to initialize
+                    setTimeout(() => {{
+                        try {{
+                            if (typeof Vex !== 'undefined' && Vex.Flow) {{
+                                console.log('VexFlow is ready!');
+                                renderSheetMusic(musicData);
+                            }} else {{
+                                throw new Error('VexFlow object not properly initialized');
+                            }}
+                        }} catch (error) {{
+                            console.error('Error after VexFlow load:', error);
+                            document.getElementById('staff-container').innerHTML = 
+                                '<div class="error">❌ VexFlow loaded but failed to initialize: ' + error.message + '</div>';
+                        }}
+                    }}, 100);
+                }};
+                
+                script.onerror = function() {{
+                    console.error(`Failed to load VexFlow from: ${{vexflowSources[sourceIndex]}}`);
+                    loadAttempts++;
+                    
+                    if (loadAttempts < maxAttempts) {{
+                        console.log(`Trying next CDN source...`);
+                        loadVexFlow(sourceIndex + 1);
+                    }} else {{
+                        document.getElementById('staff-container').innerHTML = 
+                            '<div class="error">❌ Failed to load VexFlow library. Please check your internet connection.</div>';
+                    }}
+                }};
+                
+                document.head.appendChild(script);
+            }}
+
+            function reloadVexFlow() {{
+                document.getElementById('staff-container').innerHTML = 
+                    '<div class="loading">🔄 Reloading VexFlow...</div>';
+                loadAttempts = 0;
+                vexflowLoaded = false;
+                loadVexFlow(0);
+            }}
+
+            function renderSheetMusic(data) {{
+                console.log('Starting to render sheet music...', data);
+                
+                document.getElementById('song-title').textContent = data.title;
+                document.getElementById('composer').textContent = data.composer;
+                document.getElementById('tempo-info').innerHTML = 
+                    `<strong>🎵 Tempo:</strong> ♩ = ${{data.tempo}} BPM | <strong>🎼 Time Signature:</strong> ${{data.time_signature}} | <strong>🎹 Key:</strong> ${{data.key_signature}} Major`;
+
+                const container = document.getElementById('staff-container');
+                container.innerHTML = ''; // Clear loading message
+                
+                if (!data.staves || data.staves.length === 0) {{
+                    container.innerHTML = '<div class="error">❌ No musical staves found in the data.</div>';
+                    return;
+                }}
+
+                const VF = Vex.Flow;
+                console.log('VexFlow version:', VF.VERSION || 'Unknown');
+
+                // Show success message
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success';
+                successDiv.innerHTML = `✅ VexFlow loaded successfully! Rendering ${{data.staves.length}} staves...`;
+                container.appendChild(successDiv);
+
+                // Render each staff
+                data.staves.forEach((staffData, staffIndex) => {{
+                    console.log(`Rendering staff ${{staffIndex + 1}}: ${{staffData.name}}`);
+                    
+                    const staffDiv = document.createElement('div');
+                    staffDiv.className = 'staff-container';
+                    staffDiv.innerHTML = `<div class="staff-title" style="color: ${{staffData.color}}">🎼 ${{staffData.name}} (${{staffData.measures.length}} measures)</div>`;
+                    
+                    const svgDiv = document.createElement('div');
+                    svgDiv.id = `staff-${{staffIndex}}`;
+                    staffDiv.appendChild(svgDiv);
+                    container.appendChild(staffDiv);
+
+                    try {{
+                        renderStaff(staffData, svgDiv.id);
+                        console.log(`✅ Successfully rendered ${{staffData.name}}`);
+                    }} catch (error) {{
+                        console.error(`❌ Error rendering ${{staffData.name}}:`, error);
+                        svgDiv.innerHTML = `<div class="error">❌ Error rendering ${{staffData.name}}: ${{error.message}}</div>`;
+                    }}
+                }});
+            }}
+
+            function renderStaff(staffData, containerId) {{
+                const VF = Vex.Flow;
+                const div = document.getElementById(containerId);
+                
+                if (!staffData.measures || staffData.measures.length === 0) {{
+                    div.innerHTML = '<div class="error">❌ No measures found for this staff.</div>';
+                    return;
+                }}
+                
+                const measuresPerLine = 4;
+                const measureWidth = 220;
+                const lineHeight = 180;
+                const totalMeasures = staffData.measures.length;
+                const totalLines = Math.ceil(totalMeasures / measuresPerLine);
+                
+                const width = Math.min(totalMeasures, measuresPerLine) * measureWidth + 120;
+                const height = totalLines * lineHeight + 80;
+
+                console.log(`Rendering ${{totalMeasures}} measures in ${{totalLines}} lines for ${{staffData.name}}`);
+
+                const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+                renderer.resize(width, height);
+                const context = renderer.getContext();
+
+                let currentY = 50;
+                let measureIndex = 0;
+
+                for (let line = 0; line < totalLines; line++) {{
+                    const measuresInThisLine = Math.min(measuresPerLine, totalMeasures - measureIndex);
+                    
+                    for (let m = 0; m < measuresInThisLine; m++) {{
+                        const x = m * measureWidth + 60;
+                        
+                        const stave = new VF.Stave(x, currentY, measureWidth - 30);
+                        
+                        // Add clef, time signature, key signature to first measure
+                        if (measureIndex === 0) {{
+                            stave.addClef(staffData.clef);
+                            stave.addTimeSignature('4/4');
+                            if (staffData.clef !== 'percussion') {{
+                                stave.addKeySignature('B');
+                            }}
+                        }}
+                        
+                        stave.setContext(context).draw();
+
+                        // Add notes for this measure
+                        if (measureIndex < staffData.measures.length) {{
+                            const measureNotes = staffData.measures[measureIndex];
+                            if (measureNotes && measureNotes.length > 0) {{
+                                try {{
+                                    const notes = measureNotes.map(noteData => {{
+                                        return new VF.StaveNote({{
+                                            clef: staffData.clef,
+                                            keys: noteData.keys,
+                                            duration: noteData.duration
+                                        }});
+                                    }});
+
+                                    // Create voice with flexible timing
+                                    const voice = new VF.Voice({{num_beats: 4, beat_value: 4}});
+                                    voice.setStrict(false);
+                                    voice.addTickables(notes);
+
+                                    // Format and draw
+                                    const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth - 50);
+                                    voice.draw(context, stave);
+                                    
+                                }} catch (error) {{
+                                    console.error(`Error rendering measure ${{measureIndex}} in ${{staffData.name}}:`, error);
+                                }}
+                            }}
+                        }}
+                        
+                        measureIndex++;
+                    }}
+                    
+                    currentY += lineHeight;
+                }}
+            }}
+
+            function downloadAsPNG() {{
+                const svgs = document.querySelectorAll('svg');
+                if (svgs.length === 0) {{
+                    alert('No sheet music to download!');
+                    return;
+                }}
+                
+                svgs.forEach((svg, index) => {{
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    
+                    canvas.width = svg.width.baseVal.value;
+                    canvas.height = svg.height.baseVal.value;
+                    
+                    img.onload = function() {{
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                        
+                        const link = document.createElement('a');
+                        link.download = `nyan-cat-sheet-music-${{index + 1}}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    }};
+                    
+                    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+                }});
+            }}
+
+            function downloadAsSVG() {{
+                const svgs = document.querySelectorAll('svg');
+                if (svgs.length === 0) {{
+                    alert('No sheet music to download!');
+                    return;
+                }}
+                
+                svgs.forEach((svg, index) => {{
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const blob = new Blob([svgData], {{type: 'image/svg+xml;charset=utf-8'}});
+                    const link = document.createElement('a');
+                    link.download = `nyan-cat-sheet-music-${{index + 1}}.svg`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }});
+            }}
+            
+            function downloadAsJSON() {{
+                const dataStr = JSON.stringify(musicData, null, 2);
+                const blob = new Blob([dataStr], {{type: 'application/json'}});
+                const link = document.createElement('a');
+                link.download = 'nyan-cat-music-data.json';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }}
+
+            // Start loading VexFlow when page loads
+            document.addEventListener('DOMContentLoaded', function() {{
+                loadVexFlow(0);
+            }});
+        </script>
+    </body>
+    </html>'''
+
+        with open(html_filename, 'w') as f:
+            f.write(html_content)
 
 ##############################
 # MAIN SCRIPT
@@ -1623,15 +2259,32 @@ def main() -> None:
         interpreter.generate_midi(midi_file)
         print(f"Generated MIDI file: {midi_file}")
         
+        # Generate VexFlow sheet music
+        print("Generating VexFlow sheet music...")
+        html_file = os.path.splitext(input_file)[0] + "_sheet.html"
+        interpreter.generate_vexflow_data(html_file)
+
+        print("Generating VexFlow sheet music...")
+        html_file = os.path.splitext(input_file)[0] + "_sheet.html"
+        interpreter.generate_vexflow_data(html_file)
+
+        # Add this line for testing:
+        test_json = interpreter.create_test_json(html_file)
+        
         # Convert MIDI to MP3
         print("Converting to MP3...")
         mp3_file = os.path.splitext(input_file)[0] + ".mp3"
         interpreter.convert_midi_to_mp3(midi_file, mp3_file)
         
+        print(f"\nGenerated files:")
+        print(f"- MIDI: {midi_file}")
+        print(f"- Audio: {mp3_file}")
+        print(f"- Sheet Music: {html_file}")
+        print(f"\nOpen {html_file} in a web browser to view the sheet music!")
+        
     except Exception as e:
         print(f"Error: {e}")
         import traceback
         traceback.print_exc()
-
 if __name__ == "__main__":
     main()

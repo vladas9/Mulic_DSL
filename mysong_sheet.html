@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Music DSL Sheet Music</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                background-color: #f9f9f9;
+            }
+            
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            
+            .title {
+                font-size: 28px;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #333;
+            }
+            
+            .composer {
+                font-size: 18px;
+                color: #666;
+                margin-bottom: 10px;
+            }
+            
+            .tempo-info {
+                margin: 20px 0;
+                text-align: center;
+                font-size: 16px;
+                background-color: #e8f4f8;
+                padding: 10px;
+                border-radius: 5px;
+                border-left: 4px solid #2E86AB;
+            }
+            
+            .staff-container {
+                margin: 30px 0;
+                padding: 25px;
+                background-color: white;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            
+            .staff-title {
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                color: #333;
+                border-bottom: 2px solid #eee;
+                padding-bottom: 10px;
+            }
+            
+            #output {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+            
+            .controls {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            
+            button {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 12px 24px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 6px 8px;
+                cursor: pointer;
+                border-radius: 6px;
+                transition: background-color 0.3s;
+            }
+            
+            button:hover {
+                background-color: #45a049;
+                transform: translateY(-1px);
+            }
+            
+            .loading {
+                text-align: center;
+                font-size: 18px;
+                color: #666;
+                margin: 50px 0;
+            }
+            
+            .error {
+                background-color: #ffe6e6;
+                color: #d00;
+                padding: 15px;
+                border-radius: 5px;
+                margin: 20px 0;
+                border-left: 4px solid #d00;
+            }
+            
+            .success {
+                background-color: #e6ffe6;
+                color: #008000;
+                padding: 15px;
+                border-radius: 5px;
+                margin: 20px 0;
+                border-left: 4px solid #008000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="output">
+            <div class="header">
+                <div class="title" id="song-title">Loading...</div>
+                <div class="composer" id="composer">Music DSL</div>
+            </div>
+            
+            <div class="controls">
+                <button onclick="downloadAsPNG()">📥 Download as PNG</button>
+                <button onclick="downloadAsSVG()">📄 Download as SVG</button>
+                <button onclick="downloadAsJSON()">📋 Download JSON Data</button>
+                <button onclick="reloadVexFlow()">🔄 Reload VexFlow</button>
+            </div>
+            
+            <div class="tempo-info" id="tempo-info">Loading...</div>
+            
+            <div id="staff-container">
+                <div class="loading">🎵 Loading VexFlow library...</div>
+            </div>
+        </div>
+
+        <script>
+            // Embedded JSON data
+            const musicData = {
+  "title": "Nyan Cat Music",
+  "composer": "Music DSL",
+  "tempo": 142,
+  "time_signature": "4/4",
+  "key_signature": "B",
+  "staves": [
+    {
+      "name": "Piano",
+      "clef": "treble",
+      "color": "#2E86AB",
+      "channel": 0,
+      "measures": [
+        [
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 0.25,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 0.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.875,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.0,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.125,
+            "midi_note": 71
+          }
+        ],
+        [
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.25,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.375,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.5,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.625,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 1.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 2.25,
+            "midi_note": 78
+          }
+        ],
+        [
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 2.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.875,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.0,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.125,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.25,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.375,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.5,
+            "midi_note": 78
+          }
+        ],
+        [
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.625,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 3.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 4.25,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 4.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.875,
+            "midi_note": 76
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Bass",
+      "clef": "bass",
+      "color": "#F18F01",
+      "channel": 2,
+      "measures": [
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.875,
+            "midi_note": 42
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Guitar",
+      "clef": "treble",
+      "color": "#A23B72",
+      "channel": 1,
+      "measures": [
+        [
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 54
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 54
+          }
+        ],
+        [
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 54
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 54
+          }
+        ],
+        [
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 61
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 61
+          }
+        ],
+        [
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 61
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 61
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Drums",
+      "clef": "percussion",
+      "color": "#C73E1D",
+      "channel": 9,
+      "measures": [
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.875,
+            "midi_note": 42
+          }
+        ]
+      ]
+    }
+  ]
+};
+            
+            let vexflowLoaded = false;
+            let loadAttempts = 0;
+            const maxAttempts = 3;
+
+            // Multiple CDN sources for VexFlow
+            const vexflowSources = [
+                'https://unpkg.com/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdn.jsdelivr.net/npm/vexflow@4.2.2/build/vexflow-min.js',
+                'https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.2/vexflow-min.js'
+            ];
+
+            function loadVexFlow(sourceIndex = 0) {
+                if (sourceIndex >= vexflowSources.length) {
+                    document.getElementById('staff-container').innerHTML = 
+                        '<div class="error">❌ Failed to load VexFlow from all CDN sources. Please check your internet connection and try refreshing the page.</div>';
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = vexflowSources[sourceIndex];
+                
+                script.onload = function() {
+                    console.log(`VexFlow loaded successfully from: ${vexflowSources[sourceIndex]}`);
+                    vexflowLoaded = true;
+                    
+                    // Wait a moment for VexFlow to initialize
+                    setTimeout(() => {
+                        try {
+                            if (typeof Vex !== 'undefined' && Vex.Flow) {
+                                console.log('VexFlow is ready!');
+                                renderSheetMusic(musicData);
+                            } else {
+                                throw new Error('VexFlow object not properly initialized');
+                            }
+                        } catch (error) {
+                            console.error('Error after VexFlow load:', error);
+                            document.getElementById('staff-container').innerHTML = 
+                                '<div class="error">❌ VexFlow loaded but failed to initialize: ' + error.message + '</div>';
+                        }
+                    }, 100);
+                };
+                
+                script.onerror = function() {
+                    console.error(`Failed to load VexFlow from: ${vexflowSources[sourceIndex]}`);
+                    loadAttempts++;
+                    
+                    if (loadAttempts < maxAttempts) {
+                        console.log(`Trying next CDN source...`);
+                        loadVexFlow(sourceIndex + 1);
+                    } else {
+                        document.getElementById('staff-container').innerHTML = 
+                            '<div class="error">❌ Failed to load VexFlow library. Please check your internet connection.</div>';
+                    }
+                };
+                
+                document.head.appendChild(script);
+            }
+
+            function reloadVexFlow() {
+                document.getElementById('staff-container').innerHTML = 
+                    '<div class="loading">🔄 Reloading VexFlow...</div>';
+                loadAttempts = 0;
+                vexflowLoaded = false;
+                loadVexFlow(0);
+            }
+
+            function renderSheetMusic(data) {
+                console.log('Starting to render sheet music...', data);
+                
+                document.getElementById('song-title').textContent = data.title;
+                document.getElementById('composer').textContent = data.composer;
+                document.getElementById('tempo-info').innerHTML = 
+                    `<strong>🎵 Tempo:</strong> ♩ = ${data.tempo} BPM | <strong>🎼 Time Signature:</strong> ${data.time_signature} | <strong>🎹 Key:</strong> ${data.key_signature} Major`;
+
+                const container = document.getElementById('staff-container');
+                container.innerHTML = ''; // Clear loading message
+                
+                if (!data.staves || data.staves.length === 0) {
+                    container.innerHTML = '<div class="error">❌ No musical staves found in the data.</div>';
+                    return;
+                }
+
+                const VF = Vex.Flow;
+                console.log('VexFlow version:', VF.VERSION || 'Unknown');
+
+                // Show success message
+                const successDiv = document.createElement('div');
+                successDiv.className = 'success';
+                successDiv.innerHTML = `✅ VexFlow loaded successfully! Rendering ${data.staves.length} staves...`;
+                container.appendChild(successDiv);
+
+                // Render each staff
+                data.staves.forEach((staffData, staffIndex) => {
+                    console.log(`Rendering staff ${staffIndex + 1}: ${staffData.name}`);
+                    
+                    const staffDiv = document.createElement('div');
+                    staffDiv.className = 'staff-container';
+                    staffDiv.innerHTML = `<div class="staff-title" style="color: ${staffData.color}">🎼 ${staffData.name} (${staffData.measures.length} measures)</div>`;
+                    
+                    const svgDiv = document.createElement('div');
+                    svgDiv.id = `staff-${staffIndex}`;
+                    staffDiv.appendChild(svgDiv);
+                    container.appendChild(staffDiv);
+
+                    try {
+                        renderStaff(staffData, svgDiv.id);
+                        console.log(`✅ Successfully rendered ${staffData.name}`);
+                    } catch (error) {
+                        console.error(`❌ Error rendering ${staffData.name}:`, error);
+                        svgDiv.innerHTML = `<div class="error">❌ Error rendering ${staffData.name}: ${error.message}</div>`;
+                    }
+                });
+            }
+
+            function renderStaff(staffData, containerId) {
+                const VF = Vex.Flow;
+                const div = document.getElementById(containerId);
+                
+                if (!staffData.measures || staffData.measures.length === 0) {
+                    div.innerHTML = '<div class="error">❌ No measures found for this staff.</div>';
+                    return;
+                }
+                
+                const measuresPerLine = 4;
+                const measureWidth = 220;
+                const lineHeight = 180;
+                const totalMeasures = staffData.measures.length;
+                const totalLines = Math.ceil(totalMeasures / measuresPerLine);
+                
+                const width = Math.min(totalMeasures, measuresPerLine) * measureWidth + 120;
+                const height = totalLines * lineHeight + 80;
+
+                console.log(`Rendering ${totalMeasures} measures in ${totalLines} lines for ${staffData.name}`);
+
+                const renderer = new VF.Renderer(div, VF.Renderer.Backends.SVG);
+                renderer.resize(width, height);
+                const context = renderer.getContext();
+
+                let currentY = 50;
+                let measureIndex = 0;
+
+                for (let line = 0; line < totalLines; line++) {
+                    const measuresInThisLine = Math.min(measuresPerLine, totalMeasures - measureIndex);
+                    
+                    for (let m = 0; m < measuresInThisLine; m++) {
+                        const x = m * measureWidth + 60;
+                        
+                        const stave = new VF.Stave(x, currentY, measureWidth - 30);
+                        
+                        // Add clef, time signature, key signature to first measure
+                        if (measureIndex === 0) {
+                            stave.addClef(staffData.clef);
+                            stave.addTimeSignature('4/4');
+                            if (staffData.clef !== 'percussion') {
+                                stave.addKeySignature('B');
+                            }
+                        }
+                        
+                        stave.setContext(context).draw();
+
+                        // Add notes for this measure
+                        if (measureIndex < staffData.measures.length) {
+                            const measureNotes = staffData.measures[measureIndex];
+                            if (measureNotes && measureNotes.length > 0) {
+                                try {
+                                    const notes = measureNotes.map(noteData => {
+                                        return new VF.StaveNote({
+                                            clef: staffData.clef,
+                                            keys: noteData.keys,
+                                            duration: noteData.duration
+                                        });
+                                    });
+
+                                    // Create voice with flexible timing
+                                    const voice = new VF.Voice({num_beats: 4, beat_value: 4});
+                                    voice.setStrict(false);
+                                    voice.addTickables(notes);
+
+                                    // Format and draw
+                                    const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth - 50);
+                                    voice.draw(context, stave);
+                                    
+                                } catch (error) {
+                                    console.error(`Error rendering measure ${measureIndex} in ${staffData.name}:`, error);
+                                }
+                            }
+                        }
+                        
+                        measureIndex++;
+                    }
+                    
+                    currentY += lineHeight;
+                }
+            }
+
+            function downloadAsPNG() {
+                const svgs = document.querySelectorAll('svg');
+                if (svgs.length === 0) {
+                    alert('No sheet music to download!');
+                    return;
+                }
+                
+                svgs.forEach((svg, index) => {
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const img = new Image();
+                    
+                    canvas.width = svg.width.baseVal.value;
+                    canvas.height = svg.height.baseVal.value;
+                    
+                    img.onload = function() {
+                        ctx.fillStyle = 'white';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                        
+                        const link = document.createElement('a');
+                        link.download = `nyan-cat-sheet-music-${index + 1}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    };
+                    
+                    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+                });
+            }
+
+            function downloadAsSVG() {
+                const svgs = document.querySelectorAll('svg');
+                if (svgs.length === 0) {
+                    alert('No sheet music to download!');
+                    return;
+                }
+                
+                svgs.forEach((svg, index) => {
+                    const svgData = new XMLSerializer().serializeToString(svg);
+                    const blob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+                    const link = document.createElement('a');
+                    link.download = `nyan-cat-sheet-music-${index + 1}.svg`;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                });
+            }
+            
+            function downloadAsJSON() {
+                const dataStr = JSON.stringify(musicData, null, 2);
+                const blob = new Blob([dataStr], {type: 'application/json'});
+                const link = document.createElement('a');
+                link.download = 'nyan-cat-music-data.json';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }
+
+            // Start loading VexFlow when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                loadVexFlow(0);
+            });
+        </script>
+    </body>
+    </html>

@@ -1,0 +1,1225 @@
+{
+  "title": "Nyan Cat Music",
+  "composer": "Music DSL",
+  "tempo": 142,
+  "time_signature": "4/4",
+  "key_signature": "B",
+  "staves": [
+    {
+      "name": "Piano",
+      "clef": "treble",
+      "color": "#2E86AB",
+      "channel": 0,
+      "measures": [
+        [
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 0.25,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 0.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 0.875,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.0,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.125,
+            "midi_note": 71
+          }
+        ],
+        [
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.25,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.375,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.5,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 1.625,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 1.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 2.25,
+            "midi_note": 78
+          }
+        ],
+        [
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 2.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 2.875,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.0,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.125,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.25,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.375,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.5,
+            "midi_note": 78
+          }
+        ],
+        [
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 3.625,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 3.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.0,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.125,
+            "midi_note": 76
+          },
+          {
+            "keys": [
+              "f#/5"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 4.25,
+            "midi_note": 78
+          },
+          {
+            "keys": [
+              "b/4"
+            ],
+            "duration": "16",
+            "velocity": 96,
+            "start_time": 4.5,
+            "midi_note": 71
+          },
+          {
+            "keys": [
+              "d#/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.75,
+            "midi_note": 75
+          },
+          {
+            "keys": [
+              "e/5"
+            ],
+            "duration": "32",
+            "velocity": 96,
+            "start_time": 4.875,
+            "midi_note": 76
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Bass",
+      "clef": "bass",
+      "color": "#F18F01",
+      "channel": 2,
+      "measures": [
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 0.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 1.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 2.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.0,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.25,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.5,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "a/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.75,
+            "midi_note": 45
+          },
+          {
+            "keys": [
+              "f#/2"
+            ],
+            "duration": "32",
+            "velocity": 48,
+            "start_time": 3.875,
+            "midi_note": 42
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Guitar",
+      "clef": "treble",
+      "color": "#A23B72",
+      "channel": 1,
+      "measures": [
+        [
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.0,
+            "midi_note": 54
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.25,
+            "midi_note": 54
+          }
+        ],
+        [
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.5,
+            "midi_note": 54
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "d#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 63
+          },
+          {
+            "keys": [
+              "b/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 59
+          },
+          {
+            "keys": [
+              "f#/3"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 0.75,
+            "midi_note": 54
+          }
+        ],
+        [
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.0,
+            "midi_note": 61
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.25,
+            "midi_note": 61
+          }
+        ],
+        [
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.5,
+            "midi_note": 61
+          },
+          {
+            "keys": [
+              "c#/5"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 73
+          },
+          {
+            "keys": [
+              "a#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 70
+          },
+          {
+            "keys": [
+              "f#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 66
+          },
+          {
+            "keys": [
+              "c#/4"
+            ],
+            "duration": "32",
+            "velocity": 64,
+            "start_time": 1.75,
+            "midi_note": 61
+          }
+        ]
+      ]
+    },
+    {
+      "name": "Drums",
+      "clef": "percussion",
+      "color": "#C73E1D",
+      "channel": 9,
+      "measures": [
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 0.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 1.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 2.875,
+            "midi_note": 42
+          }
+        ],
+        [
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.0,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.125,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.25,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.375,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.5,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.625,
+            "midi_note": 42
+          },
+          {
+            "keys": [
+              "c/4"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.75,
+            "midi_note": 38
+          },
+          {
+            "keys": [
+              "g/5"
+            ],
+            "duration": "32",
+            "velocity": 80,
+            "start_time": 3.875,
+            "midi_note": 42
+          }
+        ]
+      ]
+    }
+  ]
+}
