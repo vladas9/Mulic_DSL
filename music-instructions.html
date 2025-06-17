@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music DSL - Instructions & Guide</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #4a5568;
+            border-bottom: 3px solid #e2e8f0;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subsection-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-color: #4299e1;
+        }
+
+        .feature-card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #4299e1;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #bee3f8, #90cdf4);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #3182ce;
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #fed7d7, #fbb6ce);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .tip {
+            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #38a169;
+        }
+
+        .button-demo {
+            display: inline-block;
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 5px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .toc {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            color: white;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #90cdf4;
+        }
+
+        .toc a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #90cdf4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #edf2f7;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            counter-increment: step-counter;
+            background: #f7fafc;
+            border-left: 4px solid #4299e1;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .step:before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            background: #4299e1;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step h4 {
+            margin-left: 20px;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Music DSL Guide</h1>
+            <p>Complete instructions for creating music with code</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="music-ide.html" class="btn success" onclick="goToIDE()">🎵 Go to IDE</a>
+            <a href="#quick-start" class="btn">🚀 Quick Start</a>
+            <a href="#syntax" class="btn">📝 Syntax Guide</a>
+            <a href="music-library.html" class="btn">💡 Examples</a>
+        </div>
+
+        <div class="toc">
+            <div class="section-title" style="color: white; border-color: rgba(255,255,255,0.3);">📋 Table of Contents</div>
+            <ul>
+                <li><a href="#overview">Platform Overview</a></li>
+                <li><a href="#quick-start">Quick Start Guide</a></li>
+                <li><a href="#interface">Interface Guide</a></li>
+                <li><a href="#syntax">Music DSL Syntax</a></li>
+                <li><a href="#examples">Code Examples</a></li>
+                <li><a href="#buttons">Button Functions</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#tips">Tips & Best Practices</a></li>
+            </ul>
+        </div>
+
+        <div class="content-section" id="overview">
+            <div class="section-title">🎵 Platform Overview</div>
+            
+            <p>The Music DSL Web IDE is a powerful tool that lets you create music using a simple programming language. You write code that describes musical notes, rhythms, and instruments, and the platform generates:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎧 Audio Files</h4>
+                    <p>High-quality MP3 audio that you can play directly in your browser or download for later use.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎼 MIDI Files</h4>
+                    <p>Standard MIDI files compatible with any music software or digital audio workstation.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📄 Sheet Music</h4>
+                    <p>Professional sheet music notation that you can view, download, and print.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💾 Code Saving</h4>
+                    <p>Save your musical code as text files to preserve and share your compositions.</p>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>🌟 What makes this special?</strong> Instead of clicking notes on a piano roll, you write code that describes your music. This makes it easy to create complex patterns, loops, and mathematical music structures that would be tedious to create manually.
+            </div>
+        </div>
+
+        <div class="content-section" id="quick-start">
+            <div class="section-title">🚀 Quick Start Guide</div>
+            
+            <div class="steps">
+                <div class="step">
+                    <h4>Choose an Example</h4>
+                    <p>Click one of the example buttons at the bottom of the IDE to load pre-written code:</p>
+                    <div style="margin: 10px 0;">
+                        <span class="button-demo">🎹 Simple Piano</span>
+                        <span class="button-demo">🌈 Nyan Cat</span>
+                        <span class="button-demo">🎼 Classical Pattern</span>
+                        <span class="button-demo">🥁 Drum Pattern</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h4>Generate Your Music</h4>
+                    <p>Once you have code in the editor, click the <strong>🎵 Generate Music</strong> button. The platform will:</p>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Process your code</li>
+                        <li>Create audio and MIDI files</li>
+                        <li>Show a progress bar</li>
+                        <li>Display the audio player when ready</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <h4>Listen and Download</h4>
+                    <p>Use the audio player to listen to your creation, then download files using:</p>
+                    <div style="margin: 10px 0;">
+                        <span class="button-demo">📥 Download MIDI</span>
+                        <span class="button-demo">🎵 Download MP3</span>
+                        <span class="button-demo">📄 Download Sheet Music</span>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <h4>Experiment and Learn</h4>
+                    <p>Modify the code, try different notes and instruments, and generate new versions. Each generation creates fresh files!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="interface">
+            <div class="section-title">🖥️ Interface Guide</div>
+            
+            <div class="subsection-title">📝 Editor Panel (Left Side)</div>
+            <p>This is where you write your Music DSL code. The editor includes:</p>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Syntax Highlighting:</strong> Code is displayed in a monospace font for clarity</li>
+                <li><strong>Resizable Area:</strong> Drag the bottom edge to make the editor taller</li>
+                <li><strong>Line Numbers:</strong> Helps you locate specific parts of your code</li>
+                <li><strong>Auto-save:</strong> Your code stays in the browser until you refresh</li>
+            </ul>
+
+            <div class="subsection-title">🎼 Output Panel (Right Side)</div>
+            <p>Shows the results of your music generation:</p>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Audio Player:</strong> Appears after successful generation with playback controls</li>
+                <li><strong>Generation Info:</strong> Shows duration, track count, and session details</li>
+                <li><strong>Download Buttons:</strong> Become available after music is generated</li>
+                <li><strong>Status Messages:</strong> Keep you informed about the generation process</li>
+            </ul>
+
+            <div class="subsection-title">🎯 Control Buttons</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎵 Generate Music</h4>
+                    <p>Processes your code and creates audio files. This is the main button you'll use to bring your code to life.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🗑️ Clear</h4>
+                    <p>Removes all code from the editor and hides any generated content. Use this to start fresh.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>💾 Save Code</h4>
+                    <p>Downloads your current code as a text file. Great for backing up your compositions.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="syntax">
+            <div class="section-title">📝 Music DSL Syntax</div>
+            
+            <div class="subsection-title">🎹 Track Types</div>
+            <p>Your music is organized into different types of tracks:</p>
+            
+            <table>
+                <tr>
+                    <th>Track Type</th>
+                    <th>Purpose</th>
+                    <th>Instruments</th>
+                </tr>
+                <tr>
+                    <td><strong>PianoTrack</strong></td>
+                    <td>Melodic lines and harmonies</td>
+                    <td>Piano notes with left (L) and right (R) hands</td>
+                </tr>
+                <tr>
+                    <td><strong>BassTrack</strong></td>
+                    <td>Low-frequency foundation</td>
+                    <td>Bass instruments with fret and string numbers</td>
+                </tr>
+                <tr>
+                    <td><strong>DrumTrack</strong></td>
+                    <td>Rhythm and percussion</td>
+                    <td>KICK, SNARE, HIHAT_CLOSED, etc.</td>
+                </tr>
+            </table>
+
+            <div class="subsection-title">⚙️ Track Settings</div>
+            <p>Each track starts with configuration settings:</p>
+            
+            <div class="code-block">PianoTrack {
+    TimeSignature = 4/4;    // Beats per measure
+    Tempo = 120;            // BPM (beats per minute)
+    Volume = "mf";          // pp, p, mp, mf, f, ff
+    
+    // Your musical notes go here...
+}</div>
+
+            <div class="subsection-title">🎵 Writing Notes</div>
+            <p>Different track types use different syntax for notes:</p>
+
+            <div class="code-block">// Piano notes: Piano(hand, note, duration)
+Piano(R, C4, 1.0);      // Right hand, C4 note, 1 beat
+Piano(L, G3, 0.5);      // Left hand, G3 note, half beat
+
+// Bass notes: Bass(fret, string, duration)
+Bass(3, 2, 0.5);        // 3rd fret, 2nd string, half beat
+
+// Drum notes: Drum(instrument, duration)
+Drum(KICK, 0.25);       // Kick drum, quarter beat
+Drum(SNARE, 0.25);      // Snare drum, quarter beat</div>
+
+            <div class="subsection-title">🔄 Loops and Repetition</div>
+            <p>Use for loops to repeat musical patterns:</p>
+
+            <div class="code-block">// Repeat a pattern 4 times
+for (i = 0; i < 4; i += 1) {
+    Piano(R, C4, 0.5);
+    Piano(R, E4, 0.5);
+    Piano(R, G4, 0.5);
+    Piano(R, C5, 0.5);
+}</div>
+
+            <div class="tip">
+                <strong>💡 Pro Tip:</strong> Loops are perfect for creating drum beats, bass lines, and repeating melodies. You can nest loops inside each other for complex patterns!
+            </div>
+        </div>
+
+        <div class="content-section" id="examples">
+            <div class="section-title">💡 Code Examples</div>
+            
+            <div class="subsection-title">🎹 Simple Piano Melody</div>
+            <div class="code-block">PianoTrack {
+    TimeSignature = 4/4;
+    Tempo = 100;
+    Volume = "mf";
+    
+    // Play a simple C major scale
+    Piano(R, C4, 1.0);
+    Piano(R, D4, 1.0);
+    Piano(R, E4, 1.0);
+    Piano(R, F4, 1.0);
+    Piano(R, G4, 2.0);    // Hold this note longer
+}</div>
+
+            <div class="subsection-title">🥁 Basic Drum Beat</div>
+            <div class="code-block">DrumTrack {
+    TimeSignature = 4/4;
+    Tempo = 120;
+    Volume = "f";
+    
+    // Standard rock beat - repeat 4 times
+    for (i = 0; i < 4; i += 1) {
+        Drum(KICK, 0.5);           // Beat 1
+        Drum(SNARE, 0.5);          // Beat 2
+        Drum(KICK, 0.25);          // Beat 3 (first half)
+        Drum(HIHAT_CLOSED, 0.25);  // Beat 3 (second half)
+        Drum(SNARE, 0.5);          // Beat 4
+    }
+}</div>
+
+            <div class="subsection-title">🎸 Bass Line</div>
+            <div class="code-block">BassTrack {
+    TimeSignature = 4/4;
+    Tempo = 110;
+    Volume = "mf";
+    
+    // Walking bass line
+    for (i = 0; i < 2; i += 1) {
+        Bass(3, 0, 0.5);    // Root note
+        Bass(5, 0, 0.5);    // Higher note
+        Bass(2, 1, 0.5);    // Different string
+        Bass(4, 1, 0.5);    // Resolution
+    }
+}</div>
+
+            <div class="subsection-title">🎼 Multi-Track Composition</div>
+            <div class="code-block">// You can have multiple tracks in one composition!
+PianoTrack {
+    TimeSignature = 4/4;
+    Tempo = 130;
+    Volume = "mp";
+    
+    for (i = 0; i < 4; i += 1) {
+        Piano(R, C5, 0.25);
+        Piano(R, E5, 0.25);
+        Piano(R, G5, 0.5);
+    }
+}
+
+DrumTrack {
+    TimeSignature = 4/4;
+    Tempo = 130;
+    Volume = "mf";
+    
+    for (i = 0; i < 8; i += 1) {
+        Drum(KICK, 0.5);
+        Drum(SNARE, 0.5);
+    }
+}</div>
+        </div>
+
+        <div class="content-section" id="buttons">
+            <div class="section-title">🔘 Button Functions Explained</div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🎵 Generate Music</h4>
+                    <p><strong>What it does:</strong> Sends your code to the server for processing</p>
+                    <p><strong>When to use:</strong> After writing or modifying your code</p>
+                    <p><strong>Result:</strong> Creates audio player and download options</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🗑️ Clear</h4>
+                    <p><strong>What it does:</strong> Removes all code from the editor</p>
+                    <p><strong>When to use:</strong> Starting a new composition from scratch</p>
+                    <p><strong>Result:</strong> Empty editor and hidden output panel</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>💾 Save Code</h4>
+                    <p><strong>What it does:</strong> Downloads your code as a .txt file</p>
+                    <p><strong>When to use:</strong> Backing up your work</p>
+                    <p><strong>Result:</strong> File saved to your Downloads folder</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📥 Download MIDI</h4>
+                    <p><strong>What it does:</strong> Downloads .mid file</p>
+                    <p><strong>When to use:</strong> Import into music software</p>
+                    <p><strong>Result:</strong> Professional MIDI file</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🎵 Download MP3</h4>
+                    <p><strong>What it does:</strong> Downloads audio file</p>
+                    <p><strong>When to use:</strong> Playing in media players</p>
+                    <p><strong>Result:</strong> High-quality audio file</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📄 Download Sheet Music</h4>
+                    <p><strong>What it does:</strong> Downloads HTML sheet music</p>
+                    <p><strong>When to use:</strong> Reading or printing notation</p>
+                    <p><strong>Result:</strong> Viewable sheet music file</p>
+                </div>
+            </div>
+
+            <div class="subsection-title">📚 Example Buttons</div>
+            <p>The example buttons at the bottom load pre-written code:</p>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>🎹 Simple Piano:</strong> Basic melody for beginners</li>
+                <li><strong>🌈 Nyan Cat:</strong> Famous internet song recreation</li>
+                <li><strong>🎼 Classical Pattern:</strong> Traditional waltz rhythm</li>
+                <li><strong>🥁 Drum Pattern:</strong> Standard rock drum beat</li>
+            </ul>
+
+            <div class="tip">
+                <strong>💡 Learning Tip:</strong> Load an example, generate it to hear how it sounds, then modify the code to see how changes affect the music!
+            </div>
+        </div>
+
+        <div class="content-section" id="troubleshooting">
+            <div class="section-title">🔧 Troubleshooting</div>
+            
+            <div class="subsection-title">❌ Common Issues</div>
+            
+            <div class="warning">
+                <strong>⚠️ "Server error" message</strong><br>
+                This usually means the backend server isn't running. Make sure your Music DSL server is started and accessible at the configured URL.
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ "No audio file available"</strong><br>
+                This happens when you try to download before generating music. Always click "Generate Music" first, wait for completion, then use download buttons.
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Code doesn't generate music</strong><br>
+                Check your syntax! Make sure you have proper track blocks (PianoTrack, BassTrack, DrumTrack) with opening and closing braces.
+            </div>
+
+            <div class="subsection-title">🐛 Debugging Your Code</div>
+            <p>If your music doesn't sound right:</p>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Check note names:</strong> Use C4, D4, E4, etc. (not C, D, E)</li>
+                <li><strong>Verify durations:</strong> Use decimal numbers (1.0, 0.5, 0.25)</li>
+                <li><strong>Count your beats:</strong> Make sure notes add up to your time signature</li>
+                <li><strong>Check loop syntax:</strong> for (i = 0; i < 4; i += 1) { ... }</li>
+            </ul>
+
+            <div class="subsection-title">🔄 Browser Issues</div>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Audio won't play:</strong> Try refreshing the page and generating again</li>
+                <li><strong>Downloads don't work:</strong> Check if your browser blocks downloads</li>
+                <li><strong>Sheet music won't load:</strong> Enable JavaScript and try a different browser</li>
+            </ul>
+        </div>
+
+        <div class="content-section" id="tips">
+            <div class="section-title">💎 Tips & Best Practices</div>
+            
+            <div class="subsection-title">🎯 Writing Better Music Code</div>
+            
+            <div class="tip">
+                <strong>🎵 Start Simple:</strong> Begin with single-track compositions, then add more tracks as you get comfortable with the syntax.
+            </div>
+
+            <div class="tip">
+                <strong>🔄 Use Loops Wisely:</strong> Loops are great for repetitive patterns, but don't make your entire song one big loop – mix it up!
+            </div>
+
+            <div class="tip">
+                <strong>⏱️ Mind Your Timing:</strong> Make sure the durations in each measure add up correctly. For 4/4 time, each measure should total 4.0 beats.
+            </div>
+
+            <div class="tip">
+                <strong>🎨 Layer Your Tracks:</strong> Combine piano, bass, and drums for fuller sound. Start with drums for rhythm, add bass for foundation, then melody on top.
+            </div>
+
+            <div class="subsection-title">🎼 Musical Tips</div>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Tempo Matching:</strong> Keep the same tempo across all tracks in a composition</li>
+                <li><strong>Volume Balance:</strong> Use "mp" or "mf" for most tracks, "f" sparingly for emphasis</li>
+                <li><strong>Note Ranges:</strong> Piano: C3-C6, Bass: low notes work best, Drums: focus on rhythm</li>
+                <li><strong>Chord Progressions:</strong> Try C-Am-F-G or other common progressions</li>
+            </ul>
+
+            <div class="subsection-title">💾 Workflow Tips</div>
+            <ul style="margin: 15px 0; padding-left: 25px;">
+                <li><strong>Save Often:</strong> Use the "Save Code" button regularly to backup your work</li>
+                <li><strong>Test Incrementally:</strong> Generate music after adding each new section</li>
+                <li><strong>Use Examples:</strong> Study the provided examples to learn new techniques</li>
+                <li><strong>Document Your Code:</strong> Use // comments to explain complex sections</li>
+            </ul>
+
+            <div class="highlight">
+                <strong>🌟 Pro Tip:</strong> The best way to learn is by experimenting! Try modifying the examples, changing tempos, adding new notes, or creating variations of existing patterns. Every musician started with simple melodies!
+            </div>
+        </div>
+
+        <div class="nav-buttons" style="margin-top: 40px;">
+            <a href="#" class="btn success" onclick="goToIDE()">🎵 Start Creating Music</a>
+            <a href="#overview" class="btn">📚 Back to Top</a>
+        </div>
+    </div>
+
+    <script>
+        function goToIDE() {
+            // Replace this with the actual path
