@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Creation History - Music DSL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .header-title p {
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+        }
+
+        .badge.success {
+            background: #dcfce7;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+        .badge.warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        .badge.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+
+        .main {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background: white;
+            color: #374151;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: #f9fafb;
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-text h3 {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-text p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .project-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .project-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .project-icon {
+            width: 3rem;
+            height: 3rem;
+            background: #dbeafe;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+        }
+
+        .project-details h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-details p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .project-badges {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .file-details h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .file-details p {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .action-btn {
+            padding: 0.25rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-results-icon {
+            width: 3rem;
+            height: 3rem;
+            color: #9ca3af;
+            margin: 0 auto 1rem;
+        }
+
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .icon-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .icon-lg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .project-title-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <header class="header">
+
+    <main class="main">
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <div class="search-container">
+                <svg class="search-icon icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search music files..." id="search-input">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn" data-filter="all">All</button>
+                <button class="filter-btn active" data-filter="mp3">MP3</button>
+                <button class="filter-btn" data-filter="mid">MIDI</button>
+                <button class="filter-btn" data-filter="txt">Text</button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #3b82f6;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                    </svg>
+                    <div class="stat-text">
+                        <h3>Total Projects</h3>
+                        <p id="stat-projects">5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #10b981;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                    </svg>
+                    <div class="stat-text">
+                        <h3>Audio Files</h3>
+                        <p id="stat-audio">4</p>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #8b5cf6;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                    </svg>
+                    <div class="stat-text">
+                        <h3>MIDI Files</h3>
+                        <p id="stat-midi">5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-content">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #f59e0b;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="stat-text">
+                        <h3>Total Duration</h3>
+                        <p>18:23</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Music Files List -->
+        <div id="projects-container">
+            <!-- Projects will be dynamically inserted here -->
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="no-results hidden">
+            <svg class="no-results-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+            </svg>
+            <h3>No music files found</h3>
+            <p>Try adjusting your search or filter criteria</p>
+        </div>
+    </main>
+
+    <script>
+        // Mock data based on your repository files
+        const musicFiles = [
+            {
+                id: "1",
+                name: "mysong",
+                files: [
+                    { type: "mid", size: "2.3 KB", created: "2024-01-15T10:30:00Z" },
+                    { type: "mp3", size: "3.2 MB", created: "2024-01-15T10:31:00Z" },
+                    { type: "txt", size: "1.1 KB", created: "2024-01-15T10:30:00Z" },
+                ],
+                description: "Generated from DSL composition",
+                status: "completed",
+                duration: "2:45",
+            },
+            {
+                id: "2",
+                name: "spacemusic",
+                files: [
+                    { type: "mid", size: "4.1 KB", created: "2024-01-14T15:22:00Z" },
+                    { type: "mp3", size: "5.8 MB", created: "2024-01-14T15:23:00Z" },
+                    { type: "txt", size: "1.8 KB", created: "2024-01-14T15:22:00Z" },
+                ],
+                description: "Ambient space-themed composition",
+                status: "completed",
+                duration: "4:12",
+            },
+            {
+                id: "3",
+                name: "mysong_sheet",
+                files: [
+                    { type: "html", size: "12.5 KB", created: "2024-01-15T10:32:00Z" },
+                    { type: "json", size: "3.7 KB", created: "2024-01-15T10:32:00Z" },
+                ],
+                description: "Sheet music visualization for mysong",
+                status: "completed",
+                duration: "2:45",
+            },
+            {
+                id: "4",
+                name: "classical_piece",
+                files: [
+                    { type: "mid", size: "6.2 KB", created: "2024-01-13T09:15:00Z" },
+                    { type: "mp3", size: "7.1 MB", created: "2024-01-13T09:16:00Z" },
+                ],
+                description: "Classical style composition experiment",
+                status: "completed",
+                duration: "5:23",
+            },
+            {
+                id: "5",
+                name: "jazz_improv",
+                files: [{ type: "mid", size: "3.8 KB", created: "2024-01-12T14:45:00Z" }],
+                description: "Jazz improvisation pattern",
+                status: "processing",
+                duration: "3:18",
+            },
+        ];
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let playingFile = null;
+
+        function getFileIcon(type) {
+            const icons = {
+                mp3: '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #10b981;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>',
+                mid: '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #3b82f6;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>',
+                txt: '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #6b7280;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>',
+                html: '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #f59e0b;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>',
+                json: '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #8b5cf6;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>'
+            };
+            return icons[type] || icons.txt;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString() + " " + date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        }
+
+        function getStatusBadge(status) {
+            const badges = {
+                completed: '<span class="badge success">Completed</span>',
+                processing: '<span class="badge warning">Processing</span>',
+                failed: '<span class="badge error">Failed</span>'
+            };
+            return badges[status] || `<span class="badge">${status}</span>`;
+        }
+
+        function togglePlay(projectId, fileIndex) {
+            const fileId = `${projectId}-${fileIndex}`;
+            if (playingFile === fileId) {
+                playingFile = null;
+            } else {
+                playingFile = fileId;
+            }
+            renderProjects();
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projects-container');
+            const noResults = document.getElementById('no-results');
+            
+            const filteredFiles = musicFiles.filter(file => {
+                const matchesSearch = file.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                    file.description.toLowerCase().includes(currentSearch.toLowerCase());
+                
+                if (currentFilter === 'all') return matchesSearch;
+                
+                const hasFileType = file.files.some(f => f.type === currentFilter);
+                return matchesSearch && hasFileType;
+            });
+
+            if (filteredFiles.length === 0) {
+                container.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            
+            container.innerHTML = filteredFiles.map(project => `
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-title-row">
+                            <div class="project-info">
+                                <div class="project-icon">
+                                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                    </svg>
+                                </div>
+                                <div class="project-details">
+                                    <h2>${project.name}</h2>
+                                    <p>${project.description}</p>
+                                </div>
+                            </div>
+                            <div class="project-badges">
+                                ${getStatusBadge(project.status)}
+                                <span class="badge">${project.duration}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-meta">
+                            <div class="meta-item">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Created: ${formatDate(project.files[0].created)}
+                            </div>
+                            <div class="meta-item">
+                                <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+                                </svg>
+                                ${project.files.length} files
+                            </div>
+                        </div>
+                        <div class="files-grid">
+                            ${project.files.map((file, index) => `
+                                <div class="file-item">
+                                    <div class="file-info">
+                                        ${getFileIcon(file.type)}
+                                        <div class="file-details">
+                                            <h4>${project.name}.${file.type}</h4>
+                                            <p>${file.size}</p>
+                                        </div>
+                                    </div>
+                                    <div class="file-actions">
+                                        ${file.type === 'mp3' ? `
+                                            <button class="action-btn" onclick="togglePlay('${project.id}', ${index})">
+                                                ${playingFile === `${project.id}-${index}` ? 
+                                                    '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>' :
+                                                    '<svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10v4a2 2 0 002 2h2a2 2 0 002-2v-4M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1"></path></svg>'
+                                                }
+                                            </button>
+                                        ` : ''}
+                                        <button class="action-btn">
+                                            <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const totalFiles = musicFiles.reduce((acc, file) => acc + file.files.length, 0);
+            const completedFiles = musicFiles.filter(file => file.status === 'completed').length;
+            const audioFiles = musicFiles.reduce((acc, file) => acc + file.files.filter(f => f.type === 'mp3').length, 0);
+            const midiFiles = musicFiles.reduce((acc, file) => acc + file.files.filter(f => f.type === 'mid').length, 0);
+
+            document.getElementById('total-files').textContent = `${totalFiles} Total Files`;
+            document.getElementById('completed-files').textContent = `${completedFiles} Completed`;
+            document.getElementById('stat-projects').textContent = musicFiles.length;
+            document.getElementById('stat-audio').textContent = audioFiles;
+            document.getElementById('stat-midi').textContent = midiFiles;
+        }
+
+        // Event listeners
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderProjects();
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.filter;
+                renderProjects();
+            });
+        });
+
+        // Initialize
+        updateStats();
+        renderProjects();
+    </script>
+    <div id="footer-placeholder"></div>
+    <script src="includes.js"></script>
+
+</body>
+</html>

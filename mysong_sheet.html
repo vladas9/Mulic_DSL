@@ -5,9 +5,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box; 
+            }
+
             body {
                 font-family: Arial, sans-serif;
-                margin: 20px;
                 background-color: #f9f9f9;
             }
             
@@ -19,7 +24,7 @@
             .title {
                 font-size: 28px;
                 font-weight: bold;
-                margin-bottom: 5px;
+                margin: 40px 10px 20px 10px;
                 color: #333;
             }
             
@@ -113,6 +118,7 @@
         </style>
     </head>
     <body>
+        <div id="header-placeholder"></div>
         <div id="output">
             <div class="header">
                 <div class="title" id="song-title">Loading...</div>
@@ -1620,5 +1626,7 @@
                 loadVexFlow(0);
             });
         </script>
+        <div id="footer-placeholder"></div>
+        <script src="includes.js"></script>
     </body>
     </html>
