@@ -1,587 +1,711 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Music DSL - Code Examples Library</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-            line-height: 1.6;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+        line-height: 1.6;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            color: white;
-        }
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+      }
 
+      .header h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header p {
+        font-size: 1.2em;
+        opacity: 0.9;
+      }
+
+      .nav-buttons {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .btn {
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn.success {
+        background: linear-gradient(135deg, #48bb78, #38a169);
+      }
+
+      .content-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px 0;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .section-title {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #4a5568;
+        border-bottom: 3px solid #e2e8f0;
+        padding-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .subsection-title {
+        font-size: 1.5em;
+        font-weight: 600;
+        margin: 25px 0 15px 0;
+        color: #2d3748;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .example-card {
+        background: #f7fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        margin: 20px 0;
+        overflow: hidden;
+        transition: all 0.3s;
+      }
+
+      .example-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: #4299e1;
+      }
+
+      .example-header {
+        background: linear-gradient(135deg, #4299e1, #3182ce);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .example-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .copy-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.05);
+      }
+
+      .copy-btn.copied {
+        background: #48bb78;
+        border-color: #38a169;
+      }
+
+      .example-description {
+        padding: 15px 20px;
+        background: #edf2f7;
+        border-bottom: 1px solid #e2e8f0;
+        font-style: italic;
+        color: #4a5568;
+      }
+
+      .code-block {
+        background: #1a202c;
+        color: #e2e8f0;
+        padding: 20px;
+        font-family: "Fira Code", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.5;
+        overflow-x: auto;
+        white-space: pre;
+        position: relative;
+      }
+
+      /* Syntax highlighting */
+      .keyword {
+        color: #81e6d9;
+        font-weight: bold;
+      }
+
+      .string {
+        color: #fbb6ce;
+      }
+
+      .number {
+        color: #f6ad55;
+      }
+
+      .comment {
+        color: #68d391;
+        font-style: italic;
+      }
+
+      .function {
+        color: #90cdf4;
+      }
+
+      .operator {
+        color: #fbb6ce;
+      }
+
+      .variable {
+        color: #e2e8f0;
+      }
+
+      .difficulty {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+
+      .difficulty.beginner {
+        background: #c6f6d5;
+        color: #22543d;
+      }
+
+      .difficulty.intermediate {
+        background: #fed7d7;
+        color: #742a2a;
+      }
+
+      .difficulty.advanced {
+        background: #e9d8fd;
+        color: #553c9a;
+      }
+
+      .tags {
+        padding: 10px 20px;
+        background: #f7fafc;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tag {
+        background: #bee3f8;
+        color: #2c5282;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .tip {
+        background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #38a169;
+      }
+
+      .highlight {
+        background: linear-gradient(135deg, #bee3f8, #90cdf4);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #3182ce;
+      }
+
+      @media (max-width: 768px) {
         .header h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
-
-        .nav-buttons {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #4299e1, #3182ce);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-decoration: none;
-            display: inline-block;
-            margin: 5px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-
-        .btn.success {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-        }
-
-        .content-section {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .section-title {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #4a5568;
-            border-bottom: 3px solid #e2e8f0;
-            padding-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .subsection-title {
-            font-size: 1.5em;
-            font-weight: 600;
-            margin: 25px 0 15px 0;
-            color: #2d3748;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .example-card {
-            background: #f7fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .example-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-color: #4299e1;
-        }
-
-        .example-header {
-            background: linear-gradient(135deg, #4299e1, #3182ce);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .example-title {
-            font-size: 1.3em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .copy-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
-        }
-
-        .copy-btn.copied {
-            background: #48bb78;
-            border-color: #38a169;
-        }
-
-        .example-description {
-            padding: 15px 20px;
-            background: #edf2f7;
-            border-bottom: 1px solid #e2e8f0;
-            font-style: italic;
-            color: #4a5568;
-        }
-
-        .code-block {
-            background: #1a202c;
-            color: #e2e8f0;
-            padding: 20px;
-            font-family: 'Fira Code', 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow-x: auto;
-            white-space: pre;
-            position: relative;
-        }
-
-        /* Syntax highlighting */
-        .keyword {
-            color: #81e6d9;
-            font-weight: bold;
-        }
-
-        .string {
-            color: #fbb6ce;
-        }
-
-        .number {
-            color: #f6ad55;
-        }
-
-        .comment {
-            color: #68d391;
-            font-style: italic;
-        }
-
-        .function {
-            color: #90cdf4;
-        }
-
-        .operator {
-            color: #fbb6ce;
-        }
-
-        .variable {
-            color: #e2e8f0;
-        }
-
-        .difficulty {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        .difficulty.beginner {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-
-        .difficulty.intermediate {
-            background: #fed7d7;
-            color: #742a2a;
-        }
-
-        .difficulty.advanced {
-            background: #e9d8fd;
-            color: #553c9a;
-        }
-
-        .tags {
-            padding: 10px 20px;
-            background: #f7fafc;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background: #bee3f8;
-            color: #2c5282;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
+          font-size: 2em;
         }
 
         .example-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
+          grid-template-columns: 1fr;
         }
 
-        .tip {
-            background: linear-gradient(135deg, #c6f6d5, #9ae6b4);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #38a169;
+        .content-section {
+          padding: 20px;
         }
 
-        .highlight {
-            background: linear-gradient(135deg, #bee3f8, #90cdf4);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #3182ce;
+        .example-header {
+          flex-direction: column;
+          gap: 10px;
+          align-items: flex-start;
         }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
-            
-            .example-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .content-section {
-                padding: 20px;
-            }
-
-            .example-header {
-                flex-direction: column;
-                gap: 10px;
-                align-items: flex-start;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="header-placeholder"></div>
     <div class="container">
-        <div class="header">
-            <h1>💾 Code Examples Library</h1>
-            <p>Copy-paste ready Music DSL code examples</p>
+      <div class="header">
+        <h1>💾 Code Examples Library</h1>
+        <p>Copy-paste ready Music DSL code examples</p>
+      </div>
+
+      <div class="nav-buttons">
+        <a href="music-ide.html" class="btn success">🎵 Go to IDE</a>
+        <a href="#beginner" class="btn">🌱 Beginner</a>
+        <a href="#intermediate" class="btn">🚀 Intermediate</a>
+        <a href="#advanced" class="btn">⭐ Advanced</a>
+      </div>
+
+      <div class="content-section">
+        <div class="highlight">
+          <strong>🎯 How to Use:</strong> Click the "Copy Code" button on any
+          example, then paste it directly into the Music DSL IDE. Each example
+          is complete and ready to generate music!
+        </div>
+      </div>
+
+      <div class="content-section" id="beginner">
+        <div class="section-title">🌱 Beginner Examples</div>
+
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎹 First Piano Song
+              <span class="difficulty beginner">BEGINNER</span>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this, 'first-piano')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            A simple melody using just the right hand. Perfect for your first
+            composition!
+          </div>
+          <div class="code-block" id="first-piano">
+            <span class="keyword">PianoTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">100</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mf"</span>;
+
+            <span class="comment">// Play a simple melody</span>
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">C4</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">D4</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">E4</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">F4</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">G4</span>, <span class="number">2.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">F4</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">E4</span>, <span class="number">1.0</span>);
+            }
+          </div>
+          <div class="tags">
+            <span class="tag">Piano</span>
+            <span class="tag">Melody</span>
+            <span class="tag">Simple</span>
+          </div>
         </div>
 
-        <div class="nav-buttons">
-            <a href="music-ide.html" class="btn success">🎵 Go to IDE</a>
-            <a href="#beginner" class="btn">🌱 Beginner</a>
-            <a href="#intermediate" class="btn">🚀 Intermediate</a>
-            <a href="#advanced" class="btn">⭐ Advanced</a>
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🥁 Basic Beat
+              <span class="difficulty beginner">BEGINNER</span>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this, 'basic-beat')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            A simple drum pattern that repeats. Great foundation for any song!
+          </div>
+          <div class="code-block" id="basic-beat">
+            <span class="keyword">DrumTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">120</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"f"</span>;
+
+            <span class="comment">// Simple kick-snare pattern</span>
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">4</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="function">Drum</span>(<span class="variable">KICK</span
+            >, <span class="number">1.0</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >SNARE</span
+            >, <span class="number">1.0</span>);
+            <span class="function">Drum</span>(<span class="variable">KICK</span
+            >, <span class="number">1.0</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >SNARE</span
+            >, <span class="number">1.0</span>); } }
+          </div>
+          <div class="tags">
+            <span class="tag">Drums</span>
+            <span class="tag">Rhythm</span>
+            <span class="tag">Loop</span>
+          </div>
         </div>
 
-        <div class="content-section">
-            <div class="highlight">
-                <strong>🎯 How to Use:</strong> Click the "Copy Code" button on any example, then paste it directly into the Music DSL IDE. Each example is complete and ready to generate music!
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎸 Simple Bass Line
+              <span class="difficulty beginner">BEGINNER</span>
             </div>
+            <button class="copy-btn" onclick="copyCode(this, 'simple-bass')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            A repetitive bass pattern that provides a solid foundation.
+          </div>
+          <div class="code-block" id="simple-bass">
+            <span class="keyword">BassTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">110</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mf"</span>;
+
+            <span class="comment">// Repeating bass pattern</span>
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">4</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="function">Bass</span>(<span class="number">3</span>,
+            <span class="number">0</span>, <span class="number">1.0</span>);
+            <span class="function">Bass</span>(<span class="number">3</span>,
+            <span class="number">0</span>, <span class="number">1.0</span>);
+            <span class="function">Bass</span>(<span class="number">5</span>,
+            <span class="number">0</span>, <span class="number">1.0</span>);
+            <span class="function">Bass</span>(<span class="number">3</span>,
+            <span class="number">0</span>, <span class="number">1.0</span>); } }
+          </div>
+          <div class="tags">
+            <span class="tag">Bass</span>
+            <span class="tag">Foundation</span>
+            <span class="tag">Repetitive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section" id="intermediate">
+        <div class="section-title">🚀 Intermediate Examples</div>
+
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎼 Two-Hand Piano
+              <span class="difficulty intermediate">INTERMEDIATE</span>
+            </div>
+            <button class="copy-btn" onclick="copyCode(this, 'two-hand-piano')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            Uses both hands - melody in the right hand, chords in the left hand.
+          </div>
+          <div class="code-block" id="two-hand-piano">
+            <span class="keyword">PianoTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">120</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mf"</span>;
+
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">4</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="comment">// Left hand plays chords</span>
+            <span class="function">Piano</span>(<span class="variable">L</span>,
+            <span class="variable">C3</span>, <span class="number">2.0</span>);
+            <span class="function">Piano</span>(<span class="variable">L</span>,
+            <span class="variable">G3</span>, <span class="number">2.0</span>);
+
+            <span class="comment">// Right hand plays melody</span>
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">E4</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">G4</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">C5</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">B4</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">A4</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">G4</span>, <span class="number">1.0</span>);
+            } }
+          </div>
+          <div class="tags">
+            <span class="tag">Piano</span>
+            <span class="tag">Two Hands</span>
+            <span class="tag">Chords</span>
+            <span class="tag">Melody</span>
+          </div>
         </div>
 
-        <div class="content-section" id="beginner">
-            <div class="section-title">🌱 Beginner Examples</div>
-            
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎹 First Piano Song
-                        <span class="difficulty beginner">BEGINNER</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'first-piano')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    A simple melody using just the right hand. Perfect for your first composition!
-                </div>
-                <div class="code-block" id="first-piano"><span class="keyword">PianoTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">100</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mf"</span>;
-    
-    <span class="comment">// Play a simple melody</span>
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">C4</span>, <span class="number">1.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">D4</span>, <span class="number">1.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">E4</span>, <span class="number">1.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">F4</span>, <span class="number">1.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">G4</span>, <span class="number">2.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">F4</span>, <span class="number">1.0</span>);
-    <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">E4</span>, <span class="number">1.0</span>);
-}</div>
-                <div class="tags">
-                    <span class="tag">Piano</span>
-                    <span class="tag">Melody</span>
-                    <span class="tag">Simple</span>
-                </div>
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎵 Complete Song Structure
+              <span class="difficulty intermediate">INTERMEDIATE</span>
             </div>
+            <button class="copy-btn" onclick="copyCode(this, 'complete-song')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            A full song with piano, bass, and drums working together.
+          </div>
+          <div class="code-block" id="complete-song">
+            <span class="keyword">PianoTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">130</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mp"</span>;
 
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🥁 Basic Beat
-                        <span class="difficulty beginner">BEGINNER</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'basic-beat')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    A simple drum pattern that repeats. Great foundation for any song!
-                </div>
-                <div class="code-block" id="basic-beat"><span class="keyword">DrumTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">120</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"f"</span>;
-    
-    <span class="comment">// Simple kick-snare pattern</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">4</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="function">Drum</span>(<span class="variable">KICK</span>, <span class="number">1.0</span>);
-        <span class="function">Drum</span>(<span class="variable">SNARE</span>, <span class="number">1.0</span>);
-        <span class="function">Drum</span>(<span class="variable">KICK</span>, <span class="number">1.0</span>);
-        <span class="function">Drum</span>(<span class="variable">SNARE</span>, <span class="number">1.0</span>);
-    }
-}</div>
-                <div class="tags">
-                    <span class="tag">Drums</span>
-                    <span class="tag">Rhythm</span>
-                    <span class="tag">Loop</span>
-                </div>
-            </div>
+            <span class="comment">// Verse melody</span>
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">4</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">C5</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">E5</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">G5</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">F5</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">E5</span>, <span class="number">1.0</span>);
+            } }
 
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎸 Simple Bass Line
-                        <span class="difficulty beginner">BEGINNER</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'simple-bass')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    A repetitive bass pattern that provides a solid foundation.
-                </div>
-                <div class="code-block" id="simple-bass"><span class="keyword">BassTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">110</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mf"</span>;
-    
-    <span class="comment">// Repeating bass pattern</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">4</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="function">Bass</span>(<span class="number">3</span>, <span class="number">0</span>, <span class="number">1.0</span>);
-        <span class="function">Bass</span>(<span class="number">3</span>, <span class="number">0</span>, <span class="number">1.0</span>);
-        <span class="function">Bass</span>(<span class="number">5</span>, <span class="number">0</span>, <span class="number">1.0</span>);
-        <span class="function">Bass</span>(<span class="number">3</span>, <span class="number">0</span>, <span class="number">1.0</span>);
-    }
-}</div>
-                <div class="tags">
-                    <span class="tag">Bass</span>
-                    <span class="tag">Foundation</span>
-                    <span class="tag">Repetitive</span>
-                </div>
-            </div>
+            <span class="keyword">BassTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">130</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mf"</span>;
+
+            <span class="comment">// Walking bass line</span>
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">8</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="function">Bass</span>(<span class="number">3</span>,
+            <span class="number">0</span>, <span class="number">0.5</span>);
+            <span class="function">Bass</span>(<span class="number">5</span>,
+            <span class="number">0</span>, <span class="number">0.5</span>);
+            <span class="function">Bass</span>(<span class="number">2</span>,
+            <span class="number">1</span>, <span class="number">0.5</span>);
+            <span class="function">Bass</span>(<span class="number">4</span>,
+            <span class="number">1</span>, <span class="number">0.5</span>); } }
+
+            <span class="keyword">DrumTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">130</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mf"</span>;
+
+            <span class="comment">// Rock beat with hi-hat</span>
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">8</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="function">Drum</span>(<span class="variable">KICK</span
+            >, <span class="number">0.5</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >HIHAT_CLOSED</span
+            >, <span class="number">0.25</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >SNARE</span
+            >, <span class="number">0.5</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >HIHAT_CLOSED</span
+            >, <span class="number">0.25</span>);
+            <span class="function">Drum</span>(<span class="variable">KICK</span
+            >, <span class="number">0.25</span>);
+            <span class="function">Drum</span>(<span class="variable">KICK</span
+            >, <span class="number">0.25</span>);
+            <span class="function">Drum</span>(<span class="variable"
+              >SNARE</span
+            >, <span class="number">0.5</span>); } }
+          </div>
+          <div class="tags">
+            <span class="tag">Multi-track</span>
+            <span class="tag">Complete Song</span>
+            <span class="tag">Rock</span>
+          </div>
         </div>
 
-        <div class="content-section" id="intermediate">
-            <div class="section-title">🚀 Intermediate Examples</div>
-            
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎼 Two-Hand Piano
-                        <span class="difficulty intermediate">INTERMEDIATE</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'two-hand-piano')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    Uses both hands - melody in the right hand, chords in the left hand.
-                </div>
-                <div class="code-block" id="two-hand-piano"><span class="keyword">PianoTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">120</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mf"</span>;
-    
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">4</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="comment">// Left hand plays chords</span>
-        <span class="function">Piano</span>(<span class="variable">L</span>, <span class="variable">C3</span>, <span class="number">2.0</span>);
-        <span class="function">Piano</span>(<span class="variable">L</span>, <span class="variable">G3</span>, <span class="number">2.0</span>);
-        
-        <span class="comment">// Right hand plays melody</span>
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">E4</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">G4</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">C5</span>, <span class="number">1.0</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">B4</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">A4</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">G4</span>, <span class="number">1.0</span>);
-    }
-}</div>
-                <div class="tags">
-                    <span class="tag">Piano</span>
-                    <span class="tag">Two Hands</span>
-                    <span class="tag">Chords</span>
-                    <span class="tag">Melody</span>
-                </div>
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎶 Waltz Pattern
+              <span class="difficulty intermediate">INTERMEDIATE</span>
             </div>
+            <button class="copy-btn" onclick="copyCode(this, 'waltz-pattern')">
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            A classical 3/4 waltz with traditional piano accompaniment pattern.
+          </div>
+          <div class="code-block" id="waltz-pattern">
+            <span class="keyword">PianoTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">3/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+            <span class="number">150</span>;
+            <span class="variable">Volume</span>
+            <span class="operator">=</span> <span class="string">"mp"</span>;
 
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎵 Complete Song Structure
-                        <span class="difficulty intermediate">INTERMEDIATE</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'complete-song')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    A full song with piano, bass, and drums working together.
-                </div>
-                <div class="code-block" id="complete-song"><span class="keyword">PianoTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">130</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mp"</span>;
-    
-    <span class="comment">// Verse melody</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">4</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">C5</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">E5</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">G5</span>, <span class="number">1.0</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">F5</span>, <span class="number">1.0</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">E5</span>, <span class="number">1.0</span>);
-    }
-}
+            <span class="comment"
+              >// Classic waltz pattern: bass-chord-chord</span
+            >
+            <span class="keyword">for</span> (<span class="variable">i</span>
+            <span class="operator">=</span> <span class="number">0</span>;
+            <span class="variable">i</span> <span class="operator">&lt;</span>
+            <span class="number">8</span>; <span class="variable">i</span>
+            <span class="operator">+=</span> <span class="number">1</span>) {
+            <span class="comment">// Left hand: bass note then chords</span>
+            <span class="function">Piano</span>(<span class="variable">L</span>,
+            <span class="variable">C3</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">L</span>,
+            <span class="variable">E3</span>, <span class="number">1.0</span>);
+            <span class="function">Piano</span>(<span class="variable">L</span>,
+            <span class="variable">G3</span>, <span class="number">1.0</span>);
 
-<span class="keyword">BassTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">130</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mf"</span>;
-    
-    <span class="comment">// Walking bass line</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">8</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="function">Bass</span>(<span class="number">3</span>, <span class="number">0</span>, <span class="number">0.5</span>);
-        <span class="function">Bass</span>(<span class="number">5</span>, <span class="number">0</span>, <span class="number">0.5</span>);
-        <span class="function">Bass</span>(<span class="number">2</span>, <span class="number">1</span>, <span class="number">0.5</span>);
-        <span class="function">Bass</span>(<span class="number">4</span>, <span class="number">1</span>, <span class="number">0.5</span>);
-    }
-}
-
-<span class="keyword">DrumTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">130</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mf"</span>;
-    
-    <span class="comment">// Rock beat with hi-hat</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">8</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="function">Drum</span>(<span class="variable">KICK</span>, <span class="number">0.5</span>);
-        <span class="function">Drum</span>(<span class="variable">HIHAT_CLOSED</span>, <span class="number">0.25</span>);
-        <span class="function">Drum</span>(<span class="variable">SNARE</span>, <span class="number">0.5</span>);
-        <span class="function">Drum</span>(<span class="variable">HIHAT_CLOSED</span>, <span class="number">0.25</span>);
-        <span class="function">Drum</span>(<span class="variable">KICK</span>, <span class="number">0.25</span>);
-        <span class="function">Drum</span>(<span class="variable">KICK</span>, <span class="number">0.25</span>);
-        <span class="function">Drum</span>(<span class="variable">SNARE</span>, <span class="number">0.5</span>);
-    }
-}</div>
-                <div class="tags">
-                    <span class="tag">Multi-track</span>
-                    <span class="tag">Complete Song</span>
-                    <span class="tag">Rock</span>
-                </div>
-            </div>
-
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎶 Waltz Pattern
-                        <span class="difficulty intermediate">INTERMEDIATE</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'waltz-pattern')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    A classical 3/4 waltz with traditional piano accompaniment pattern.
-                </div>
-                <div class="code-block" id="waltz-pattern"><span class="keyword">PianoTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">3/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span> <span class="number">150</span>;
-    <span class="variable">Volume</span> <span class="operator">=</span> <span class="string">"mp"</span>;
-    
-    <span class="comment">// Classic waltz pattern: bass-chord-chord</span>
-    <span class="keyword">for</span> (<span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="variable">i</span> <span class="operator">&lt;</span> <span class="number">8</span>; <span class="variable">i</span> <span class="operator">+=</span> <span class="number">1</span>) {
-        <span class="comment">// Left hand: bass note then chords</span>
-        <span class="function">Piano</span>(<span class="variable">L</span>, <span class="variable">C3</span>, <span class="number">1.0</span>);
-        <span class="function">Piano</span>(<span class="variable">L</span>, <span class="variable">E3</span>, <span class="number">1.0</span>);
-        <span class="function">Piano</span>(<span class="variable">L</span>, <span class="variable">G3</span>, <span class="number">1.0</span>);
-        
-        <span class="comment">// Right hand: melody</span>
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">G4</span>, <span class="number">1.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">A4</span>, <span class="number">0.5</span>);
-        <span class="function">Piano</span>(<span class="variable">R</span>, <span class="variable">B4</span>, <span class="number">1.0</span>);
-    }
-}</div>
-                <div class="tags">
-                    <span class="tag">Waltz</span>
-                    <span class="tag">3/4 Time</span>
-                    <span class="tag">Classical</span>
-                </div>
-            </div>
+            <span class="comment">// Right hand: melody</span>
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">G4</span>, <span class="number">1.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">A4</span>, <span class="number">0.5</span>);
+            <span class="function">Piano</span>(<span class="variable">R</span>,
+            <span class="variable">B4</span>, <span class="number">1.0</span>);
+            } }
+          </div>
+          <div class="tags">
+            <span class="tag">Waltz</span>
+            <span class="tag">3/4 Time</span>
+            <span class="tag">Classical</span>
+          </div>
         </div>
+      </div>
 
-        <div class="content-section" id="advanced">
-            <div class="section-title">⭐ Advanced Examples</div>
-            
-            <div class="example-card">
-                <div class="example-header">
-                    <div class="example-title">
-                        🎹 Complex Jazz Progression
-                        <span class="difficulty advanced">ADVANCED</span>
-                    </div>
-                    <button class="copy-btn" onclick="copyCode(this, 'jazz-progression')">
-                        📋 Copy Code
-                    </button>
-                </div>
-                <div class="example-description">
-                    Advanced jazz chord progression with complex rhythms and syncopation.
-                </div>
-                <div class="code-block" id="jazz-progression"><span class="keyword">PianoTrack</span> {
-    <span class="variable">TimeSignature</span> <span class="operator">=</span> <span class="string">4/4</span>;
-    <span class="variable">Tempo</span> <span class="operator">=</span>
+      <div class="content-section" id="advanced">
+        <div class="section-title">⭐ Advanced Examples</div>
+
+        <div class="example-card">
+          <div class="example-header">
+            <div class="example-title">
+              🎹 Complex Jazz Progression
+              <span class="difficulty advanced">ADVANCED</span>
+            </div>
+            <button
+              class="copy-btn"
+              onclick="copyCode(this, 'jazz-progression')"
+            >
+              📋 Copy Code
+            </button>
+          </div>
+          <div class="example-description">
+            Advanced jazz chord progression with complex rhythms and
+            syncopation.
+          </div>
+          <div class="code-block" id="jazz-progression">
+            <span class="keyword">PianoTrack</span> {
+            <span class="variable">TimeSignature</span>
+            <span class="operator">=</span> <span class="string">4/4</span>;
+            <span class="variable">Tempo</span> <span class="operator">=</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script src="includes.js"></script>
+  </body>
+</html>
