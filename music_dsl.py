@@ -933,6 +933,12 @@ class TempoEvent:
         self.time = time
         self.tempo = tempo
 
+
+class PauseEvent(MusicEvent):
+    def __init__(self, start_time: float, duration: float):
+        super().__init__(start_time, duration)
+
+
 class Interpreter:
     def __init__(self):
         self.environment = Environment()
@@ -1005,6 +1011,17 @@ class Interpreter:
         elif isinstance(command, Tempo):
             self.tempo_events.append(TempoEvent(self.current_time, command.value))
             self.current_tempo = command.value
+
+        elif isinstance(command, Pause):
+            duration = self.evaluate_duration(command.duration)
+            
+            # Add pause/rest event
+            self.events.append(
+                PauseEvent(
+                    self.current_time,
+                    duration
+                )
+            )
         
         elif isinstance(command, Volume):
             if command.value in self.volume_mapping:
@@ -1580,17 +1597,20 @@ class Interpreter:
         print(f"Starting VexFlow data generation...")
         print(f"Total events to process: {len(self.events)}")
         
-        # Group events by channel/instrument
+        # Group events by channel/instrument and include pauses
         events_by_channel = {}
+        pause_events = []
+        
         for event in self.events:
             if isinstance(event, NoteEvent):
                 if event.channel not in events_by_channel:
                     events_by_channel[event.channel] = []
                 events_by_channel[event.channel].append(event)
+            elif isinstance(event, PauseEvent):
+                pause_events.append(event)
         
         print(f"Events grouped by channel: {list(events_by_channel.keys())}")
-        for channel, events in events_by_channel.items():
-            print(f"  Channel {channel}: {len(events)} events")
+        print(f"Pause events found: {len(pause_events)}")
         
         # Channel to instrument mapping
         channel_info = {
@@ -1618,11 +1638,12 @@ class Interpreter:
             info = channel_info.get(channel, {"name": f"Channel {channel}", "clef": "treble", "color": "#000000"})
             print(f"Processing {info['name']} with {len(events)} events...")
             
-            # Sort events by start time
-            events.sort(key=lambda e: e.start_time)
+            # Combine notes and pauses, then sort by start time
+            all_events = events + pause_events  # Include pauses for all instruments
+            all_events.sort(key=lambda e: e.start_time)
             
-            # For simplicity, let's just take the first 32 notes to avoid too complex measures
-            limited_events = events[:32]
+            # Take first 32 events for simplicity
+            limited_events = all_events[:32]
             
             # Group notes into measures (assuming 4/4 time)
             measures = []
@@ -1631,7 +1652,7 @@ class Interpreter:
             measure_length = 4.0  # 4 beats per measure in 4/4 time
             
             for event in limited_events:
-                # If this note would go into the next measure or we have 8 notes already
+                # If this event would go into the next measure or we have 8 items already
                 if current_measure_time + event.duration > measure_length or len(current_measure) >= 8:
                     # Finish current measure
                     if current_measure:
@@ -1639,17 +1660,31 @@ class Interpreter:
                         current_measure = []
                         current_measure_time = 0.0
                 
-                # Convert MIDI note to VexFlow notation
-                note_name = self.midi_to_vexflow_note(event.note_value, channel == 9)
-                duration = self.duration_to_vexflow(event.duration)
-                
-                note_data = {
-                    "keys": [note_name],
-                    "duration": duration,
-                    "velocity": event.velocity,
-                    "start_time": event.start_time,
-                    "midi_note": event.note_value
-                }
+                if isinstance(event, PauseEvent):
+                    # Convert pause to VexFlow rest
+                    duration = self.duration_to_vexflow(event.duration)
+                    
+                    note_data = {
+                        "keys": ["rest"],  # Special key to indicate rest
+                        "duration": duration,
+                        "velocity": 0,  # Rests have no velocity
+                        "start_time": event.start_time,
+                        "midi_note": -1,  # Special value for rests
+                        "is_rest": True
+                    }
+                else:
+                    # Regular note
+                    note_name = self.midi_to_vexflow_note(event.note_value, channel == 9)
+                    duration = self.duration_to_vexflow(event.duration)
+                    
+                    note_data = {
+                        "keys": [note_name],
+                        "duration": duration,
+                        "velocity": event.velocity,
+                        "start_time": event.start_time,
+                        "midi_note": event.note_value,
+                        "is_rest": False
+                    }
                 
                 current_measure.append(note_data)
                 current_measure_time += event.duration
@@ -1671,6 +1706,18 @@ class Interpreter:
             
             sheet_data["staves"].append(staff_data)
         
+        time_sig_numerator, time_sig_denominator = self.current_time_signature
+        measure_length = float(time_sig_numerator * (4 / time_sig_denominator))
+
+        for event in limited_events:
+            # If this event would go into the next measure or we have 8 items already
+            if current_measure_time + event.duration > measure_length or len(current_measure) >= 8:
+                # Finish current measure
+                if current_measure:
+                    measures.append(current_measure)
+                    current_measure = []
+                    current_measure_time = 0.0
+
         # Save the JSON data
         json_filename = filename.replace('.html', '.json')
         print(f"Saving JSON to: {json_filename}")
@@ -1794,6 +1841,8 @@ class Interpreter:
             return "32"     # thirty-second note
         else:
             return "64"     # sixty-fourth note
+
+    # Replace your generate_vexflow_html method with this more robust version:
 
     def generate_vexflow_html(self, html_filename: str, json_filename: str) -> None:
         """Generate HTML file with VexFlow rendering and embedded JSON data"""

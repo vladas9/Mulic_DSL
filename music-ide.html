@@ -767,34 +767,89 @@ DrumTrack {
             }
             
             const measuresPerLine = 4;
-            const measureWidth = 200;
+            const baseMeasureWidth = 180; // Increased minimum width
             const lineHeight = 150;
             const totalMeasures = staffData.measures.length;
             const totalLines = Math.ceil(totalMeasures / measuresPerLine);
             
-            const width = Math.min(totalMeasures, measuresPerLine) * measureWidth + 100;
-            const height = totalLines * lineHeight + 50;
+            // Calculate dynamic widths for each measure based on note complexity
+            const measureWidths = staffData.measures.map(function(measure, index) {
+                if (!measure || measure.length === 0) {
+                    return baseMeasureWidth;
+                }
+                
+                // Calculate width based on note durations and count
+                let totalNoteSpace = 0;
+                measure.forEach(function(note) {
+                    // Different durations need different amounts of space
+                    const duration = note.duration || 'q';
+                    let noteSpace = 40; // Base space per note
+                    
+                    if (duration === 'w') noteSpace = 80; // Whole note
+                    else if (duration === 'h') noteSpace = 60; // Half note
+                    else if (duration === 'q') noteSpace = 45; // Quarter note
+                    else if (duration === '8') noteSpace = 35; // Eighth note
+                    else if (duration === '16') noteSpace = 30; // Sixteenth note
+                    else if (duration === '32') noteSpace = 25; // Thirty-second note
+                    
+                    totalNoteSpace += noteSpace;
+                });
+                
+                // Add extra space for first measure due to clef, time signature, key signature
+                let extraSpace = 0;
+                if (index === 0) {
+                    extraSpace = 80; // Extra space for clef + time sig + key sig
+                }
+                
+                // Add padding and ensure minimum width
+                return Math.max(baseMeasureWidth, totalNoteSpace + 60 + extraSpace);
+            });
+            
+            // Calculate total width needed for each line
+            let maxLineWidth = 0;
+            for (let line = 0; line < totalLines; line++) {
+                const startMeasure = line * measuresPerLine;
+                const endMeasure = Math.min(startMeasure + measuresPerLine, totalMeasures);
+                let lineWidth = 100; // Left margin
+                
+                for (let m = startMeasure; m < endMeasure; m++) {
+                    lineWidth += measureWidths[m] + 10; // Add spacing between measures
+                }
+                
+                maxLineWidth = Math.max(maxLineWidth, lineWidth);
+            }
+            
+            const width = maxLineWidth + 100; // Add some right padding
+            const height = totalLines * lineHeight + 100; // Extra height for tempo/dynamics markings
 
             const renderer = new VF.Renderer(container, VF.Renderer.Backends.SVG);
             renderer.resize(width, height);
             const context = renderer.getContext();
 
-            let currentY = 40;
+            let currentY = 70; // More space at top for markings
             let measureIndex = 0;
 
             for (let line = 0; line < totalLines; line++) {
                 const measuresInThisLine = Math.min(measuresPerLine, totalMeasures - measureIndex);
+                let currentX = 50; // Starting X position for this line
                 
                 for (let m = 0; m < measuresInThisLine; m++) {
-                    const x = m * measureWidth + 50;
-                    const stave = new VF.Stave(x, currentY, measureWidth - 20);
+                    const measureWidth = measureWidths[measureIndex];
+                    
+                    const stave = new VF.Stave(currentX, currentY, measureWidth);
                     
                     if (measureIndex === 0) {
                         stave.addClef(staffData.clef);
-                        stave.addTimeSignature('4/4');
+                        // Use the actual time signature from the data
+                        const sheetData = window.currentSheetData;
+                        const timeSignature = sheetData ? sheetData.time_signature : '4/4';
+                        stave.addTimeSignature(timeSignature);
                         if (staffData.clef !== 'percussion') {
                             stave.addKeySignature('B');
                         }
+                        
+                        // Add tempo and dynamics markings above the first measure
+                        addTempoAndDynamicsMarkingsIDE(context, currentX, currentY - 35, measureWidth);
                     }
                     
                     stave.setContext(context).draw();
@@ -804,18 +859,44 @@ DrumTrack {
                         if (measureNotes && measureNotes.length > 0) {
                             try {
                                 const notes = measureNotes.map(function(noteData) {
-                                    return new VF.StaveNote({
-                                        clef: staffData.clef,
-                                        keys: noteData.keys,
-                                        duration: noteData.duration
-                                    });
+                                    // Check if this is a pause/rest
+                                    if (noteData.keys && noteData.keys[0] === 'rest') {
+                                        // Create a rest symbol
+                                        return new VF.StaveNote({
+                                            clef: staffData.clef,
+                                            keys: ['d/5'], // Dummy key for rest positioning
+                                            duration: noteData.duration + 'r' // Add 'r' for rest
+                                        });
+                                    } else {
+                                        // Regular note
+                                        return new VF.StaveNote({
+                                            clef: staffData.clef,
+                                            keys: noteData.keys,
+                                            duration: noteData.duration
+                                        });
+                                    }
                                 });
 
-                                const voice = new VF.Voice({num_beats: 4, beat_value: 4});
+                                // Create voice with flexible timing based on actual time signature
+                                const sheetData = window.currentSheetData;
+                                const timeSignature = sheetData ? sheetData.time_signature : '4/4';
+                                const [numerator, denominator] = timeSignature.split('/').map(Number);
+                                
+                                const voice = new VF.Voice({
+                                    num_beats: numerator, 
+                                    beat_value: denominator
+                                });
                                 voice.setStrict(false);
                                 voice.addTickables(notes);
 
-                                const formatter = new VF.Formatter().joinVoices([voice]).format([voice], measureWidth - 40);
+                                // Account for first measure clef space
+                                let availableWidth = measureWidth - 40; // Leave padding for barlines
+                                if (measureIndex === 0) {
+                                    // First measure needs more space deducted for clef, time sig, key sig
+                                    availableWidth = measureWidth - 120;
+                                }
+                                
+                                const formatter = new VF.Formatter().joinVoices([voice]).format([voice], availableWidth);
                                 voice.draw(context, stave);
                                 
                             } catch (error) {
@@ -824,11 +905,99 @@ DrumTrack {
                         }
                     }
                     
+                    currentX += measureWidth + 10; // Add spacing between measures
                     measureIndex++;
                 }
                 
                 currentY += lineHeight;
             }
+        }
+
+        // Helper function to add tempo and dynamics markings for IDE
+        function addTempoAndDynamicsMarkingsIDE(context, x, y, measureWidth) {
+            const sheetData = window.currentSheetData;
+            if (!sheetData) return;
+            
+            // Get tempo and convert to musical term
+            const tempo = sheetData.tempo || 120;
+            const tempoMarking = getTempoMarkingIDE(tempo);
+            
+            // Get volume and convert to dynamics marking
+            const volume = getCurrentVolumeIDE();
+            const dynamicsMarking = getDynamicsMarkingIDE(volume);
+            
+            // Set font for markings
+            context.setFont('Arial', 12, 'bold');
+            
+            // Add tempo marking (top left)
+            if (tempoMarking) {
+                context.fillText(tempoMarking + ' (♩ = ' + tempo + ')', x, y - 15);
+            }
+            
+            // Add dynamics marking (below tempo, italicized)
+            if (dynamicsMarking) {
+                context.setFont('Arial', 14, 'italic');
+                context.fillText(dynamicsMarking, x, y);
+            }
+        }
+
+        // Convert BPM to musical tempo marking
+        function getTempoMarkingIDE(bpm) {
+            if (bpm <= 40) return 'Grave';
+            else if (bpm <= 60) return 'Lento';
+            else if (bpm <= 66) return 'Larghetto';
+            else if (bpm <= 76) return 'Adagio';
+            else if (bpm <= 108) return 'Andante';
+            else if (bpm <= 120) return 'Moderato';
+            else if (bpm <= 168) return 'Allegro';
+            else if (bpm <= 176) return 'Vivace';
+            else if (bpm <= 200) return 'Presto';
+            else return 'Prestissimo';
+        }
+
+        // Convert volume to dynamics marking
+        function getDynamicsMarkingIDE(volume) {
+            // Handle string volume markings first
+            if (typeof volume === 'string') {
+                switch(volume.toLowerCase()) {
+                    case 'ppp': case 'pianississimo': return 'ppp';
+                    case 'pp': case 'pianissimo': return 'pp';
+                    case 'p': case 'piano': return 'p';
+                    case 'mp': case 'mezzo-piano': return 'mp';
+                    case 'mf': case 'mezzo-forte': return 'mf';
+                    case 'f': case 'forte': return 'f';
+                    case 'ff': case 'fortissimo': return 'ff';
+                    case 'fff': case 'fortississimo': return 'fff';
+                    default: return volume;
+                }
+            }
+            
+            // Handle numeric volume (0-127 MIDI velocity)
+            if (typeof volume === 'number') {
+                if (volume <= 16) return 'ppp';
+                else if (volume <= 32) return 'pp';
+                else if (volume <= 48) return 'p';
+                else if (volume <= 64) return 'mp';
+                else if (volume <= 80) return 'mf';
+                else if (volume <= 96) return 'f';
+                else if (volume <= 112) return 'ff';
+                else return 'fff';
+            }
+            
+            return 'mf'; // Default
+        }
+
+        // Get current volume from the sheet data (first staff's first measure)
+        function getCurrentVolumeIDE() {
+            const sheetData = window.currentSheetData;
+            if (sheetData && sheetData.staves && sheetData.staves.length > 0) {
+                const firstStaff = sheetData.staves[0];
+                if (firstStaff.measures && firstStaff.measures.length > 0 && firstStaff.measures[0].length > 0) {
+                    const firstNote = firstStaff.measures[0][0];
+                    return firstNote.velocity || 80; // Default to mf
+                }
+            }
+            return 'mf'; // Default dynamics
         }
 
         function downloadMIDI() {
