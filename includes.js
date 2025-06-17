@@ -7,6 +7,7 @@ const headerHTML = `
         <li><a href="music-ide.html">Home</a></li>
         <li><a href="music-library.html">Library</a></li>
         <li><a href="mysong_sheet.html">Music Sheets</a></li>
+        <li><a href="history.html">History</a></li>
         <li><a href="music-instructions.html">Instructions</a></li>
       </ul>
       <button class="mobile-menu-toggle" id="mobileToggle">☰</button>
@@ -93,11 +94,11 @@ const footerHTML = `
     <div class="footer-content">
       <div class="footer-section">
         <h3>Quick Links</h3>
-        <ul>
-          <li><a href="music-ide.html">Music DSL Web IDE</a></li>
+        <ul> 
           <li><a href="music-ide.html">Home</a></li>
           <li><a href="music-library.html">Library</a></li>
           <li><a href="mysong_sheet.html">Music Sheets</a></li>
+          <li><a href="history.html">History</a></li>
           <li><a href="music-instructions.html">Instructions</a></li>
         </ul>
       </div>
